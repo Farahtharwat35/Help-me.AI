@@ -23,7 +23,7 @@ volume = cast(interface, POINTER(IAudioEndpointVolume))
 
 #####Volume Range#####
 volMin, volMax = volume.GetVolumeRange()[:2]
-
+flag= True
 while True:
 
     #Capturing images
@@ -46,27 +46,30 @@ while True:
             mpDraw.draw_landmarks(img, handlandmark, mpHands.HAND_CONNECTIONS)  #draw all the landmarks
 
     if lmList != []:
-        ##Points for thumb and index
-        x1, y1 = lmList[4][1], lmList[4][2]
-        x2, y2 = lmList[8][1], lmList[8][2]
-
-        ##Draw circle on tips
-        cv2.circle(img, (x1, y1), 15, (255, 0, 0), cv2.FILLED)
-        cv2.circle(img, (x2, y2), 15, (255, 0, 0), cv2.FILLED)
-
-        ##Draw a line in between
-        cv2.line(img, (x1, y1), (x2, y2), (255, 0, 0), 3)
-
-        ##Getting length between fingers
-        length = hypot(x2 - x1, y2 - y1)
-
-        ##converting hand range to volume range
-        vol = np.interp(length, [15, 220], [volMin, volMax])
-
-        print(vol, length) #for debugging
 
         ##Set MasterVolume
-        volume.SetMasterVolumeLevel(vol, None)
+        if (flag ):
+            ##Points for thumb and index
+            x1, y1 = lmList[4][1], lmList[4][2]
+            x2, y2 = lmList[8][1], lmList[8][2]
+
+            ##Draw circle on tips
+            cv2.circle(img, (x1, y1), 15, (255, 0, 0), cv2.FILLED)
+            cv2.circle(img, (x2, y2), 15, (255, 0, 0), cv2.FILLED)
+
+            ##Draw a line in between
+            cv2.line(img, (x1, y1), (x2, y2), (255, 0, 0), 3)
+
+            ##Getting length between fingers
+            length = hypot(x2 - x1, y2 - y1)
+
+            ##converting hand range to volume range
+            vol = np.interp(length, [60, 260], [volMin, volMax])
+
+            print(vol, length)  # for debugging
+
+            volume.SetMasterVolumeLevel(vol, None)
+
         indexX = 0
         indexY = 0
         indexMid = 0
@@ -75,6 +78,7 @@ while True:
         pinkyX = 0
         pinkyY = 0
         fistWarning = "Fist!"
+        ThumbY=0
         for lms in lmList:
             if lms[0] == 9:
                 middleBottomY = lms[2]
@@ -93,11 +97,18 @@ while True:
                 # cv2.circle(handsFrame, (lms[1], lms[2]), 15, (255, 0, 255), cv2.FILLED)
             elif lms[0] == 0:
                 handBottomX, handBottomY = lms[1], lms[2]
+            elif lms[0]== 8 :
+                indexY=lms[2]
+            elif lms [0]==4 :
+                ThumbY=lms[2]
+        if(ThumbY==indexY):
+            flag=True
+
         if (middleY < handBottomY) and (ringY < handBottomY) and (pinkyY < handBottomY) and (middleY > middleBottomY) and (ringY > ringBottomY) and (pinkyY>pinkyBottomY):
             #cv2.rectangle(handsFrame, (indexX, indexY), (pinkyX, handBottomY), (0, 0, 255), 2)
             #cv2.putText(handsFrame, fistWarning, (pinkyX + 2, indexY - 2), (font), .7,(0, 0, 255), 1, cv2.LINE_4)
            # print("Fist!!")
-            break
+            flag=False
 
 
     cv2.imshow('Image', img)
