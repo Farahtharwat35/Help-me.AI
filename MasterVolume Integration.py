@@ -5,6 +5,24 @@ from ctypes import cast, POINTER
 from comtypes import CLSCTX_ALL
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 import numpy as np
+from mediapipe.tasks import python
+from mediapipe.tasks.python import vision
+BaseOptions = mp.tasks.BaseOptions
+GestureRecognizer = mp.tasks.vision.GestureRecognizer
+GestureRecognizerOptions = mp.tasks.vision.GestureRecognizerOptions
+GestureRecognizerResult = mp.tasks.vision.GestureRecognizerResult
+VisionRunningMode = mp.tasks.vision.RunningMode
+
+# Create a gesture recognizer instance with the live stream mode:
+def print_result(result: GestureRecognizerResult, output_image: mp.Image, timestamp_ms: int):
+    print('gesture recognition result: {}'.format(result))
+
+options = GestureRecognizerOptions(
+    base_options=BaseOptions(model_asset_path='/path/to/model.task'),
+    running_mode=VisionRunningMode.LIVE_STREAM,
+    result_callback=print_result)
+model_path = 'D:\Ain Shams University\Junior\Semester 6\Artificial Intelligence\Project\MODELS\gesture_recognizer.task'
+base_options = BaseOptions(model_asset_path=model_path)
 
 cap = cv2.VideoCapture(0) # default 0
 
@@ -109,8 +127,7 @@ while True:
             #cv2.putText(handsFrame, fistWarning, (pinkyX + 2, indexY - 2), (font), .7,(0, 0, 255), 1, cv2.LINE_4)
            # print("Fist!!")
             flag=False
-
-
+    mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=img)
     cv2.imshow('Image', img)
 
     if cv2.waitKey(1) & 0xff == ord('q'):
