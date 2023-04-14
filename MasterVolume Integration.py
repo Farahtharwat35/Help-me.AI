@@ -7,6 +7,19 @@ from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 import numpy as np
 import matplotlib.pyplot as plt
 
+
+#####Detecting, initializing, and configuring the hands#####
+mpHands = mp.solutions.hands
+#This line imports the hands module from the MediaPipe library and assigns it to the variable mpHands.
+#This module contains the functionality for detecting and tracking hands in images and videos
+hands = mpHands.Hands()
+#This line creates an instance of the Hands class from the hands module, which is used to detect and track hands in an image or video.
+#This line initializes the hand tracking model with default parameters.
+mpDraw = mp.solutions.drawing_utils
+#This line imports the drawing_utils module from the MediaPipe library and assigns it to the variable mpDraw.
+#This module contains utility functions for drawing the hand landmarks and connections on an image or video frame.
+
+
 def countFingers(image, results, draw=True, display=True):
 
     # Get the height and width of the input image.
@@ -18,7 +31,8 @@ def countFingers(image, results, draw=True, display=True):
     # Initialize a dictionary to store the count of fingers of both hands.
     count = {'RIGHT': 0, 'LEFT': 0}
 
-    # Store the indexes of the tips landmarks of each finger of a hand in a list.
+    # Store the indexes of the tips landmarks of each finger of a hand in a list.(The IDs are represented by Landmark objects,
+    # which have a name attribute that indicates the name of the landmark)
     fingers_tips_ids = [mpHands.HandLandmark.INDEX_FINGER_TIP, mpHands.HandLandmark.MIDDLE_FINGER_TIP,
                         mpHands.HandLandmark.RING_FINGER_TIP, mpHands.HandLandmark.PINKY_TIP]
 
@@ -27,10 +41,11 @@ def countFingers(image, results, draw=True, display=True):
                         'RIGHT_PINKY': False, 'LEFT_THUMB': False, 'LEFT_INDEX': False, 'LEFT_MIDDLE': False,
                         'LEFT_RING': False, 'LEFT_PINKY': False}
 
-    # Iterate over the found hands in the image.
+    # Iterate over the found hands in the image. hand_info contains ClassificationList object for each hand,
     for hand_index, hand_info in enumerate(results.multi_handedness):
 
-        # Retrieve the label of the found hand.
+        # Retrieve the label of the found hand= access the handedness information for each hand using the ClassificationList.classification attribute,
+        # which is a list of ClassificationResult objects.)
         hand_label = hand_info.classification[0].label
 
         # Retrieve the landmarks of the found hand.
@@ -70,20 +85,20 @@ def countFingers(image, results, draw=True, display=True):
         cv2.putText(output_image, str(sum(count.values())), (width // 2 - 150, 240), cv2.FONT_HERSHEY_SIMPLEX,
                     8.9, (20, 255, 155), 10, 10)
 
-    # Check if the output image is specified to be displayed.
-    if display:
-
-        # Display the output image.
-        plt.figure(figsize=[10, 10])
-        plt.imshow(output_image[:, :, ::-1]);
-        plt.title("Output Image");
-        plt.axis('off');
+    # # Check if the output image is specified to be displayed.
+    # if display:
+    #     print ("outttt")
+    #     # Display the output image.
+    #     plt.figure(figsize=[10, 10])
+    #     plt.imshow(output_image[:, :, ::-1]);
+    #     plt.title("Output Image");
+    #     plt.axis('off');
 
     # Otherwise
-    else:
+    #else:
 
         # Return the output image, the status of each finger and the count of the fingers up of both hands.
-        return output_image, fingers_statuses, count
+    return output_image, fingers_statuses, count
 
 
 def recognizeGestures(image, fingers_statuses, count):
@@ -137,22 +152,16 @@ def recognizeGestures(image, fingers_statuses, count):
 
         ####################################################################################################################
 
+        #elif count[hand_label]==1 and fingers_statuses[hand_label + '_THUMB']
+
         # Return the output image and the gestures of the both hands.
         return output_image, hands_gestures
+
 
 cap = cv2.VideoCapture(0) # default 0
 #cap.set(3,1280) to make a specific winodw with resolution 960*1280
 #cap.set(4,960)
-#####Detecting, initializing, and configuring the hands#####
-mpHands = mp.solutions.hands
-#This line imports the hands module from the MediaPipe library and assigns it to the variable mpHands.
-#This module contains the functionality for detecting and tracking hands in images and videos
-hands = mpHands.Hands()
-#This line creates an instance of the Hands class from the hands module, which is used to detect and track hands in an image or video.
-#This line initializes the hand tracking model with default parameters.
-mpDraw = mp.solutions.drawing_utils
-#This line imports the drawing_utils module from the MediaPipe library and assigns it to the variable mpDraw.
-#This module contains utility functions for drawing the hand landmarks and connections on an image or video frame.
+
 
 #####Accessing the speaker#####
 devices = AudioUtilities.GetSpeakers()
@@ -161,13 +170,19 @@ volume = cast(interface, POINTER(IAudioEndpointVolume))
 
 #####Volume Range#####
 volMin, volMax = volume.GetVolumeRange()[:2]
-volumeFlag = False
+print (volMin,volMax)
+volumeFlag = False;
+
 while True:
 
     #Capturing images
     success, img = cap.read()
     img = cv2.flip(img,1)
     imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+    #The results variable contains the output of the hand landmark detection,
+    # which includes information such as the 3D coordinates of each hand landmark, the hand's pose,
+    # and the handedness (left or right hand).
     results = hands.process(imgRGB)
 
     #List for hands
@@ -175,22 +190,28 @@ while True:
 
     if results.multi_hand_landmarks:
         img, fingers_statuses, count = countFingers(img, results, display=False)
-        myGesture = recognizeGestures(img, fingers_statuses, count)
+        _,myGesture = recognizeGestures(img, fingers_statuses, count)
+        HIGH_FIVE_SIGN="HIGH-FIVE SIGN"
+        if  HIGH_FIVE_SIGN in myGesture.values():
+            volumeFlag = True;
         for handlandmark in results.multi_hand_landmarks:
-            # This line loops through each individual landmark point in the current set of hand landmarks.
+            # This line loops through each individual landmark point in the currentVolume set of hand landmarks.
             # The landmark property of the handlandmark object contains a list of 21 (x, y, z) coordinates for each hand landmark detected in the image or video frame.
             for id, lm in enumerate(handlandmark.landmark):
                 h, w, c = img.shape  #height, width, and channels of image
                 cx, cy = int(lm.x * w), int(lm.y * h)
-                #(This line calculates the (x, y) coordinates of the current landmark point by multiplying its normalized (x, y) coordinates (in the range [0, 1]) with the width and height of the image, respectively, and converting the result to an integer value.
+                #(This line calculates the (x, y) coordinates of the currentVolume landmark point by multiplying its normalized (x, y) coordinates (in the range [0, 1]) with the width and height of the image, respectively, and converting the result to an integer value.
                 # This gives the pixel coordinates of the landmark point in the image.
                 lmList.append([id, cx, cy])
             mpDraw.draw_landmarks(img, handlandmark, mpHands.HAND_CONNECTIONS)  #draw all the landmarks
+    one=1
+    two=2
 
     if lmList != []:
 
         ##Set MasterVolume
         if (volumeFlag):
+            print ("FLAGG")
             ##Points for thumb and index
             x1, y1 = lmList[4][1], lmList[4][2]
             x2, y2 = lmList[8][1], lmList[8][2]
@@ -205,12 +226,53 @@ while True:
             ##Getting length between fingers
             length = hypot(x2 - x1, y2 - y1)
 
-            ##converting hand range to volume range
-            vol = np.interp(length, [60, 260], [volMin, volMax])
+            # for i in count.values() :
+            #     print(i)
 
-            print(vol, length)  # for debugging
+            if one in count.values() or two in count.values():
+                ##converting hand range to volume range
+                #vol = np.interp(length, [60, 260], [volMin, volMax])
+                # #print(vol, length)  # for debugging
+                currentVolume=volume.GetMasterVolumeLevel()
+                print("currentVolume ",currentVolume)
 
-            volume.SetMasterVolumeLevel(vol, None)
+                if (one in count.values()):
+                    if (currentVolume  >= volMin and currentVolume < volMax):
+                        print("da5alt")
+                        if (currentVolume >=volMin and currentVolume <= -24.0  ):
+                            currentVolume+= 0.5
+                        elif (currentVolume > -24  and currentVolume <= -15.0 ):
+                            currentVolume += 0.2
+                        elif (currentVolume > -15 and currentVolume <= -10):
+                            currentVolume += 0.15
+                        else:
+                            if(currentVolume+0.1<volMax):
+                                currentVolume += 0.1
+                            else :
+                                currentVolume=volMax
+
+                else :
+                    print("elseee")
+                    if (currentVolume  >= volMin and currentVolume <= volMax):
+                        print("twooooooo")
+                        if (currentVolume >=-10 and currentVolume <= volMax  ):
+                            print(("dou7aa"))
+                            currentVolume-= 0.05
+                        elif (currentVolume < -10  and currentVolume >= -15.0 ):
+                            currentVolume -= 0.08
+                        elif (currentVolume < -15 and currentVolume >= -24):
+                            currentVolume -= 0.1
+                        else:
+                            if(currentVolume-0.4>volMin):
+                                currentVolume -= 0.4
+                            else :
+                                currentVolume=volMin
+
+
+                print("currentVolume 2: ", currentVolume)
+                volume.SetMasterVolumeLevel(currentVolume, None)
+
+
 
         indexX = 0
         indexY = 0
@@ -245,11 +307,11 @@ while True:
                 ThumbY = lms[2]
         if ThumbY == indexY:
             flag = True
-        if (middleY < handBottomY) and (ringY < handBottomY) and (pinkyY < handBottomY) and (middleY > middleBottomY) and (ringY > ringBottomY) and (pinkyY>pinkyBottomY):
-            #cv2.rectangle(handsFrame, (indexX, indexY), (pinkyX, handBottomY), (0, 0, 255), 2)
-            #cv2.putText(handsFrame, fistWarning, (pinkyX + 2, indexY - 2), (font), .7,(0, 0, 255), 1, cv2.LINE_4)
-            #print("Fist!!")
-            volumeFlag = False
+        # if (middleY < handBottomY) and (ringY < handBottomY) and (pinkyY < handBottomY) and (middleY > middleBottomY) and (ringY > ringBottomY) and (pinkyY>pinkyBottomY):
+        #     #cv2.rectangle(handsFrame, (indexX, indexY), (pinkyX, handBottomY), (0, 0, 255), 2)
+        #     #cv2.putText(handsFrame, fistWarning, (pinkyX + 2, indexY - 2), (font), .7,(0, 0, 255), 1, cv2.LINE_4)
+        #     #print("Fist!!")
+        #     volumeFlag = False
 
     cv2.imshow('Image', img)
 
