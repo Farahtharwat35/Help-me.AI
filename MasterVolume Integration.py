@@ -39,7 +39,8 @@ def countFingers(image, results, draw=True, display=True):
     # Initialize a dictionary to store the status (i.e., True for open and False for close) of each finger of both hands.
     fingers_statuses = {'RIGHT_THUMB': False, 'RIGHT_INDEX': False, 'RIGHT_MIDDLE': False, 'RIGHT_RING': False,
                         'RIGHT_PINKY': False, 'LEFT_THUMB': False, 'LEFT_INDEX': False, 'LEFT_MIDDLE': False,
-                        'LEFT_RING': False, 'LEFT_PINKY': False}
+                        'LEFT_RING': False, 'LEFT_PINKY': False , 'RIGHT_THUMB_UP':False,'LEFT_THUMB_UP':False,
+                        'RIGHT_THUMB_DOWN':False,'LEFT_THUMB_DOWN':False}
 
     # Iterate over the found hands in the image. hand_info contains ClassificationList object for each hand,
     for hand_index, hand_info in enumerate(results.multi_handedness):
@@ -68,15 +69,23 @@ def countFingers(image, results, draw=True, display=True):
         # Retrieve the y-coordinates of the tip and mcp landmarks of the thumb of the hand.
         thumb_tip_x = hand_landmarks.landmark[mpHands.HandLandmark.THUMB_TIP].x
         thumb_mcp_x = hand_landmarks.landmark[mpHands.HandLandmark.THUMB_TIP - 2].x
+        thumb_tip_y = hand_landmarks.landmark[mpHands.HandLandmark.THUMB_TIP].y
+        thumb_mcp_y = hand_landmarks.landmark[mpHands.HandLandmark.THUMB_TIP - 2].y
 
         # Check if the thumb is up by comparing the hand label and the x-coordinates of the retrieved landmarks.
-        if (hand_label == 'Right' and (thumb_tip_x < thumb_mcp_x)) or (
-                hand_label == 'Left' and (thumb_tip_x > thumb_mcp_x)):
+        if (hand_label == 'Right' and (thumb_tip_x < thumb_mcp_x)) or (hand_label == 'Left' and (thumb_tip_x > thumb_mcp_x)):
             # Update the status of the thumb in the dictionary to true.
             fingers_statuses[hand_label.upper() + "_THUMB"] = True
-
             # Increment the count of the fingers up of the hand by 1.
             count[hand_label.upper()] += 1
+
+        if (hand_label == 'Right' and (thumb_tip_y < thumb_mcp_y)) or (hand_label == 'Left' and (thumb_tip_y < thumb_mcp_y)):
+            # Update the status of the thumb in the dictionary to true.
+            fingers_statuses[hand_label.upper() + "_THUMB_UP"] = True
+
+        if (hand_label == 'Right' and (thumb_tip_y > thumb_mcp_y)) or (hand_label == 'Left' and (thumb_tip_y > thumb_mcp_y)):
+            # Update the status of the thumb in the dictionary to true.
+            fingers_statuses[hand_label.upper() + "_THUMB_DOWN"] = True
 
     # Check if the total count of the fingers of both hands are specified to be written on the output image.
     if draw:
@@ -84,18 +93,6 @@ def countFingers(image, results, draw=True, display=True):
         cv2.putText(output_image, " Total Fingers: ", (10, 25), cv2.FONT_HERSHEY_COMPLEX, 1, (20, 255, 155), 2)
         cv2.putText(output_image, str(sum(count.values())), (width // 2 - 150, 240), cv2.FONT_HERSHEY_SIMPLEX,
                     8.9, (20, 255, 155), 10, 10)
-
-    # # Check if the output image is specified to be displayed.
-    # if display:
-    #     print ("outttt")
-    #     # Display the output image.
-    #     plt.figure(figsize=[10, 10])
-    #     plt.imshow(output_image[:, :, ::-1]);
-    #     plt.title("Output Image");
-    #     plt.axis('off');
-
-    # Otherwise
-    #else:
 
         # Return the output image, the status of each finger and the count of the fingers up of both hands.
     return output_image, fingers_statuses, count
@@ -112,8 +109,10 @@ def recognizeGestures(image, fingers_statuses, count):
     # Initialize a dictionary to store the gestures of both hands in the image.
     hands_gestures = {'RIGHT': "UNKNOWN", 'LEFT': "UNKNOWN"}
 
+
     # Iterate over the left and right hand.
     for hand_index, hand_label in enumerate(hands_labels):
+
 
         # Check if the person is making the 'Peace Sign' gesture with the hand.
         ####################################################################################################################
@@ -152,8 +151,52 @@ def recognizeGestures(image, fingers_statuses, count):
 
         ####################################################################################################################
 
-        #elif count[hand_label]==1 and fingers_statuses[hand_label + '_THUMB']
+        elif count[hand_label] == 0 :
 
+            # Update the gesture value of the hand that we are iterating upon to FIST SIGN.
+            hands_gestures[hand_label] = "FIST SIGN"
+            print("FIST SIGN")
+
+        ##########################################################################################################################################################
+
+        elif count[hand_label] == 2 and fingers_statuses[hand_label + '_THUMB'] and fingers_statuses[hand_label + '_PINKY']:
+
+            # Update the gesture value of the hand that we are iterating upon to CALL SIGN.
+            hands_gestures[hand_label] = "CALL SIGN"
+            print("CALL SIGN")
+
+        ##########################################################################################################################################################
+
+        elif count[hand_label] == 3 and fingers_statuses[hand_label + '_MIDDLE'] and fingers_statuses[hand_label + '_PINKY'] and fingers_statuses[hand_label + '_RING']:
+
+            # Update the gesture value of the hand that we are iterating upon to PERFECTO SIGN.
+            hands_gestures[hand_label] = "PERFECTO SIGN"
+            print("PERFECTO SIGN")
+
+        ##########################################################################################################################################################
+
+        elif count[hand_label] == 1 and fingers_statuses[hand_label + '_INDEX'] :
+
+            # Update the gesture value of the hand that we are iterating upon to ONE SIGN WITH INDEX.
+            hands_gestures[hand_label] = "ONE SIGN"
+            print("ONE SIGN")
+
+        #############################################################################################################################################################
+        elif count[hand_label] == 1 and fingers_statuses[hand_label + '_THUMB_UP']:
+
+            # Update the gesture value of the hand that we are iterating upon to ONE SIGN WITH INDEX.
+            hands_gestures[hand_label] = "THUMB UP SIGN"
+            print("THUMB UP SIGN")
+
+        #############################################################################################################################################################
+
+        elif count[hand_label] == 1 and fingers_statuses[hand_label + '_THUMB_DOWN']:
+
+            # Update the gesture value of the hand that we are iterating upon to ONE SIGN WITH INDEX.
+            hands_gestures[hand_label] = "THUMB DOWN SIGN"
+            print("THUMB DOWN SIGN")
+
+        #############################################################################################################################################################
         # Return the output image and the gestures of the both hands.
         return output_image, hands_gestures
 
@@ -191,8 +234,7 @@ while True:
     if results.multi_hand_landmarks:
         img, fingers_statuses, count = countFingers(img, results, display=False)
         _,myGesture = recognizeGestures(img, fingers_statuses, count)
-        HIGH_FIVE_SIGN="HIGH-FIVE SIGN"
-        if  HIGH_FIVE_SIGN in myGesture.values():
+        if "SPIDERMAN SIGN" in myGesture.values():
             volumeFlag = True;
         for handlandmark in results.multi_hand_landmarks:
             # This line loops through each individual landmark point in the currentVolume set of hand landmarks.
@@ -205,41 +247,18 @@ while True:
                 lmList.append([id, cx, cy])
             mpDraw.draw_landmarks(img, handlandmark, mpHands.HAND_CONNECTIONS)  #draw all the landmarks
 
-    two=2
-    three=3
-
     if lmList != []:
 
         ##Set MasterVolume
         if (volumeFlag):
-            print ("FLAGG")
-            # ##Points for thumb and index
-            # x1, y1 = lmList[4][1], lmList[4][2]
-            # x2, y2 = lmList[8][1], lmList[8][2]
-            #
-            # ##Draw circle on tips
-            # cv2.circle(img, (x1, y1), 15, (255, 0, 0), cv2.FILLED)
-            # cv2.circle(img, (x2, y2), 15, (255, 0, 0), cv2.FILLED)
-
-            # ##Draw a line in between
-            # cv2.line(img, (x1, y1), (x2, y2), (255, 0, 0), 3)
-            #
-            # ##Getting length between fingers
-            # length = hypot(x2 - x1, y2 - y1)
-
-            # for i in count.values() :
-            #     print(i)
-
-            if two in count.values() or three in count.values():
+            if 1 in count.values() or 2 in count.values():
                 ##converting hand range to volume range
                 #vol = np.interp(length, [60, 260], [volMin, volMax])
                 # #print(vol, length)  # for debugging
                 currentVolume=volume.GetMasterVolumeLevel()
-                print("currentVolume ",currentVolume)
 
-                if (two in count.values()):
-                    if (currentVolume  >= volMin and currentVolume < volMax):
-                        print("da5alt")
+                if 1 in count.values():
+                    if (currentVolume  >=volMin and currentVolume < volMax):
                         if (currentVolume >=volMin and currentVolume <= -24.0  ):
                             currentVolume+= 0.5
                         elif (currentVolume > -24  and currentVolume <= -15.0 ):
@@ -253,11 +272,8 @@ while True:
                                 currentVolume=volMax
 
                 else :
-                    print("elseee")
                     if (currentVolume  >= volMin and currentVolume <= volMax):
-                        print("twooooooo")
-                        if (currentVolume >=-10 and currentVolume <= volMax  ):
-                            print(("dou7aa"))
+                        if (currentVolume >=-10 and currentVolume <=volMax  ):
                             currentVolume-= 0.05
                         elif (currentVolume < -10  and currentVolume >= -15.0 ):
                             currentVolume -= 0.08
@@ -269,48 +285,9 @@ while True:
                             else :
                                 currentVolume=volMin
 
-
-                print("currentVolume 2: ", currentVolume)
                 volume.SetMasterVolumeLevel(currentVolume, None)
 
-
-
-        indexX = 0
-        indexY = 0
-        indexMid = 0
-        handBottomX = 0
-        handBottomY = 0
-        pinkyX = 0
-        pinkyY = 0
-        fistWarning = "Fist!"
-        ThumbY = 0
-        for lms in lmList:
-            if lms[0] == 9:
-                middleBottomY = lms[2]
-            elif lms[0] == 13:
-                ringBottomY = lms[2]
-            elif lms[0] == 17:
-                pinkyBottomY = lms[2]
-            elif lms[0] == 11:
-                middleY = lms[2]
-            # cv2.circle(handsFrame, (lms[1], lms[2]), 15, (255, 0, 255), cv2.FILLED)
-            elif lms[0] == 15:
-                ringY = lms[2]
-            # cv2.circle(handsFrame, (lms[1], lms[2]), 15, (255, 0, 255), cv2.FILLED)
-            elif lms[0] == 19:
-                pinkyX, pinkyY = lms[1], lms[2]
-                # cv2.circle(handsFrame, (lms[1], lms[2]), 15, (255, 0, 255), cv2.FILLED)
-            elif lms[0] == 0:
-                handBottomX, handBottomY = lms[1], lms[2]
-            elif lms[0] == 8:
-                indexY = lms[2]
-            elif lms[0] == 4:
-                ThumbY = lms[2]
-        if ThumbY == indexY:
-            flag = True
-        if (middleY < handBottomY) and (ringY < handBottomY) and (pinkyY < handBottomY) and (middleY > middleBottomY) and (ringY > ringBottomY) and (pinkyY>pinkyBottomY):
-            #cv2.rectangle(handsFrame, (indexX, indexY), (pinkyX, handBottomY), (0, 0, 255), 2)
-            #cv2.putText(handsFrame, fistWarning, (pinkyX + 2, indexY - 2), (font), .7,(0, 0, 255), 1, cv2.LINE_4)
+        if "FIST SIGN" in myGesture.values():
             print("Fist!!")
             volumeFlag = False
 
