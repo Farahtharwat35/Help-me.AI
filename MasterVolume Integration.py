@@ -6,7 +6,7 @@ from comtypes import CLSCTX_ALL
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 import numpy as np
 import matplotlib.pyplot as plt
-
+import Integrator
 
 #####Detecting, initializing, and configuring the hands#####
 mpHands = mp.solutions.hands
@@ -235,7 +235,9 @@ while True:
         img, fingers_statuses, count = countFingers(img, results, display=False)
         _,myGesture = recognizeGestures(img, fingers_statuses, count)
         if "SPIDERMAN SIGN" in myGesture.values():
-            volumeFlag = True;
+            volumeFlag = True
+        if "HIGH-FIVE SIGN" in myGesture.values():
+            Integrator.gestureChooser("HIGH-FIVE SIGN")
         for handlandmark in results.multi_hand_landmarks:
             # This line loops through each individual landmark point in the currentVolume set of hand landmarks.
             # The landmark property of the handlandmark object contains a list of 21 (x, y, z) coordinates for each hand landmark detected in the image or video frame.
