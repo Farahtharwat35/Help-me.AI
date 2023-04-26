@@ -10,18 +10,19 @@ import Integrator
 
 #####Detecting, initializing, and configuring the hands#####
 mpHands = mp.solutions.hands
-#This line imports the hands module from the MediaPipe library and assigns it to the variable mpHands.
-#This module contains the functionality for detecting and tracking hands in images and videos
+# This line imports the hands module from the MediaPipe library and assigns it to the variable mpHands.
+# This module contains the functionality for detecting and tracking hands in images and videos
 hands = mpHands.Hands()
-#This line creates an instance of the Hands class from the hands module, which is used to detect and track hands in an image or video.
-#This line initializes the hand tracking model with default parameters.
+# This line creates an instance of the Hands class from the hands module, which is used to detect and track hands in an image or video.
+# This line initializes the hand tracking model with default parameters.
 mpDraw = mp.solutions.drawing_utils
-#This line imports the drawing_utils module from the MediaPipe library and assigns it to the variable mpDraw.
-#This module contains utility functions for drawing the hand landmarks and connections on an image or video frame.
+
+
+# This line imports the drawing_utils module from the MediaPipe library and assigns it to the variable mpDraw.
+# This module contains utility functions for drawing the hand landmarks and connections on an image or video frame.
 
 
 def countFingers(image, results, draw=True, display=True):
-
     # Get the height and width of the input image.
     height, width, _ = image.shape
 
@@ -39,8 +40,8 @@ def countFingers(image, results, draw=True, display=True):
     # Initialize a dictionary to store the status (i.e., True for open and False for close) of each finger of both hands.
     fingers_statuses = {'RIGHT_THUMB': False, 'RIGHT_INDEX': False, 'RIGHT_MIDDLE': False, 'RIGHT_RING': False,
                         'RIGHT_PINKY': False, 'LEFT_THUMB': False, 'LEFT_INDEX': False, 'LEFT_MIDDLE': False,
-                        'LEFT_RING': False, 'LEFT_PINKY': False , 'RIGHT_THUMB_UP':False,'LEFT_THUMB_UP':False,
-                        'RIGHT_THUMB_DOWN':False,'LEFT_THUMB_DOWN':False}
+                        'LEFT_RING': False, 'LEFT_PINKY': False, 'RIGHT_THUMB_UP': False, 'LEFT_THUMB_UP': False,
+                        'RIGHT_THUMB_DOWN': False, 'LEFT_THUMB_DOWN': False}
 
     # Iterate over the found hands in the image. hand_info contains ClassificationList object for each hand,
     for hand_index, hand_info in enumerate(results.multi_handedness):
@@ -73,17 +74,20 @@ def countFingers(image, results, draw=True, display=True):
         thumb_mcp_y = hand_landmarks.landmark[mpHands.HandLandmark.THUMB_TIP - 2].y
 
         # Check if the thumb is up by comparing the hand label and the x-coordinates of the retrieved landmarks.
-        if (hand_label == 'Right' and (thumb_tip_x < thumb_mcp_x)) or (hand_label == 'Left' and (thumb_tip_x > thumb_mcp_x)):
+        if (hand_label == 'Right' and (thumb_tip_x < thumb_mcp_x)) or (
+                hand_label == 'Left' and (thumb_tip_x > thumb_mcp_x)):
             # Update the status of the thumb in the dictionary to true.
             fingers_statuses[hand_label.upper() + "_THUMB"] = True
             # Increment the count of the fingers up of the hand by 1.
             count[hand_label.upper()] += 1
 
-        if (hand_label == 'Right' and (thumb_tip_y < thumb_mcp_y)) or (hand_label == 'Left' and (thumb_tip_y < thumb_mcp_y)):
+        if (hand_label == 'Right' and (thumb_tip_y < thumb_mcp_y)) or (
+                hand_label == 'Left' and (thumb_tip_y < thumb_mcp_y)):
             # Update the status of the thumb in the dictionary to true.
             fingers_statuses[hand_label.upper() + "_THUMB_UP"] = True
 
-        if (hand_label == 'Right' and (thumb_tip_y > thumb_mcp_y)) or (hand_label == 'Left' and (thumb_tip_y > thumb_mcp_y)):
+        if (hand_label == 'Right' and (thumb_tip_y > thumb_mcp_y)) or (
+                hand_label == 'Left' and (thumb_tip_y > thumb_mcp_y)):
             # Update the status of the thumb in the dictionary to true.
             fingers_statuses[hand_label.upper() + "_THUMB_DOWN"] = True
 
@@ -99,7 +103,6 @@ def countFingers(image, results, draw=True, display=True):
 
 
 def recognizeGestures(image, fingers_statuses, count):
-
     # Create a copy of the input image.
     output_image = image.copy()
 
@@ -109,16 +112,15 @@ def recognizeGestures(image, fingers_statuses, count):
     # Initialize a dictionary to store the gestures of both hands in the image.
     hands_gestures = {'RIGHT': "UNKNOWN", 'LEFT': "UNKNOWN"}
 
-
     # Iterate over the left and right hand.
     for hand_index, hand_label in enumerate(hands_labels):
-
 
         # Check if the person is making the 'Peace Sign' gesture with the hand.
         ####################################################################################################################
 
         # Check if the number of fingers up is 2 and the fingers that are up, are the index and the middle finger.
-        if count[hand_label] == 2 and fingers_statuses[hand_label + '_MIDDLE'] and fingers_statuses[hand_label + '_INDEX']:
+        if count[hand_label] == 2 and fingers_statuses[hand_label + '_MIDDLE'] and fingers_statuses[
+            hand_label + '_INDEX']:
 
             # Update the gesture value of the hand that we are iterating upon to V SIGN.
             hands_gestures[hand_label] = "PEACE SIGN"
@@ -151,7 +153,7 @@ def recognizeGestures(image, fingers_statuses, count):
 
         ####################################################################################################################
 
-        elif count[hand_label] == 0 :
+        elif count[hand_label] == 0:
 
             # Update the gesture value of the hand that we are iterating upon to FIST SIGN.
             hands_gestures[hand_label] = "FIST SIGN"
@@ -159,7 +161,8 @@ def recognizeGestures(image, fingers_statuses, count):
 
         ##########################################################################################################################################################
 
-        elif count[hand_label] == 2 and fingers_statuses[hand_label + '_THUMB'] and fingers_statuses[hand_label + '_PINKY']:
+        elif count[hand_label] == 2 and fingers_statuses[hand_label + '_THUMB'] and fingers_statuses[
+            hand_label + '_PINKY']:
 
             # Update the gesture value of the hand that we are iterating upon to CALL SIGN.
             hands_gestures[hand_label] = "CALL SIGN"
@@ -167,7 +170,8 @@ def recognizeGestures(image, fingers_statuses, count):
 
         ##########################################################################################################################################################
 
-        elif count[hand_label] == 3 and fingers_statuses[hand_label + '_MIDDLE'] and fingers_statuses[hand_label + '_PINKY'] and fingers_statuses[hand_label + '_RING']:
+        elif count[hand_label] == 3 and fingers_statuses[hand_label + '_MIDDLE'] and fingers_statuses[
+            hand_label + '_PINKY'] and fingers_statuses[hand_label + '_RING']:
 
             # Update the gesture value of the hand that we are iterating upon to PERFECTO SIGN.
             hands_gestures[hand_label] = "PERFECTO SIGN"
@@ -175,7 +179,7 @@ def recognizeGestures(image, fingers_statuses, count):
 
         ##########################################################################################################################################################
 
-        elif count[hand_label] == 1 and fingers_statuses[hand_label + '_INDEX'] :
+        elif count[hand_label] == 1 and fingers_statuses[hand_label + '_INDEX']:
 
             # Update the gesture value of the hand that we are iterating upon to ONE SIGN WITH INDEX.
             hands_gestures[hand_label] = "ONE SIGN"
@@ -201,9 +205,9 @@ def recognizeGestures(image, fingers_statuses, count):
         return output_image, hands_gestures
 
 
-cap = cv2.VideoCapture(0) # default 0
-#cap.set(3,1280) to make a specific winodw with resolution 960*1280
-#cap.set(4,960)
+cap = cv2.VideoCapture(0)  # default 0
+# cap.set(3,1280) to make a specific window with resolution 960*1280
+# cap.set(4,960)
 
 
 #####Accessing the speaker#####
@@ -213,79 +217,95 @@ volume = cast(interface, POINTER(IAudioEndpointVolume))
 
 #####Volume Range#####
 volMin, volMax = volume.GetVolumeRange()[:2]
-print (volMin,volMax)
-volumeFlag = False;
-
+print(volMin, volMax)
+volumeFlag = False
+flag1 = [True]
+modules = []
 while True:
 
-    #Capturing images
+    # Capturing images
     success, img = cap.read()
-    img = cv2.flip(img,1)
+    img = cv2.flip(img, 1)
     imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
-    #The results variable contains the output of the hand landmark detection,
+    # The results variable contains the output of the hand landmark detection,
     # which includes information such as the 3D coordinates of each hand landmark, the hand's pose,
     # and the handedness (left or right hand).
     results = hands.process(imgRGB)
 
-    #List for hands
+    # List for hands
     lmList = []
 
     if results.multi_hand_landmarks:
         img, fingers_statuses, count = countFingers(img, results, display=False)
-        _,myGesture = recognizeGestures(img, fingers_statuses, count)
+        _, myGesture = recognizeGestures(img, fingers_statuses, count)
         if "SPIDERMAN SIGN" in myGesture.values():
-            volumeFlag = True
-        if "HIGH-FIVE SIGN" in myGesture.values():
-            Integrator.gestureChooser("HIGH-FIVE SIGN")
+            # volumeFlag = True
+            Integrator.gestureChooser_main("SPIDERMAN SIGN", flag1, modules)
+
+        elif "HIGH-FIVE SIGN" in myGesture.values():
+            Integrator.gestureChooser_main("HIGH-FIVE SIGN", flag1, modules)
+
+        elif "CALL SIGN" in myGesture.values():
+            Integrator.gestureChooser_main("CALL SIGN", flag1, modules)
+
+        elif "FIST SIGN" in myGesture.values():
+            Integrator.gestureChooser_main("FIST SIGN", flag1, modules)
+
+        elif "PERFECTO SIGN" in myGesture.values():
+            Integrator.gestureChooser_main("PERFECTO SIGN", flag1, modules)
+
+        elif "ONE SIGN" in myGesture.values():
+            Integrator.gestureChooser_main("ONE SIGN", flag1, modules)
+
         for handlandmark in results.multi_hand_landmarks:
             # This line loops through each individual landmark point in the currentVolume set of hand landmarks.
             # The landmark property of the handlandmark object contains a list of 21 (x, y, z) coordinates for each hand landmark detected in the image or video frame.
             for id, lm in enumerate(handlandmark.landmark):
-                h, w, c = img.shape  #height, width, and channels of image
+                h, w, c = img.shape  # height, width, and channels of image
                 cx, cy = int(lm.x * w), int(lm.y * h)
-                #(This line calculates the (x, y) coordinates of the currentVolume landmark point by multiplying its normalized (x, y) coordinates (in the range [0, 1]) with the width and height of the image, respectively, and converting the result to an integer value.
+                # (This line calculates the (x, y) coordinates of the currentVolume landmark point by multiplying its normalized (x, y) coordinates (in the range [0, 1]) with the width and height of the image, respectively, and converting the result to an integer value.
                 # This gives the pixel coordinates of the landmark point in the image.
                 lmList.append([id, cx, cy])
-            mpDraw.draw_landmarks(img, handlandmark, mpHands.HAND_CONNECTIONS)  #draw all the landmarks
+            mpDraw.draw_landmarks(img, handlandmark, mpHands.HAND_CONNECTIONS)  # draw all the landmarks
 
     if lmList != []:
 
         ##Set MasterVolume
-        if (volumeFlag):
+        if volumeFlag:
             if 1 in count.values() or 2 in count.values():
                 ##converting hand range to volume range
-                #vol = np.interp(length, [60, 260], [volMin, volMax])
+                # vol = np.interp(length, [60, 260], [volMin, volMax])
                 # #print(vol, length)  # for debugging
-                currentVolume=volume.GetMasterVolumeLevel()
+                currentVolume = volume.GetMasterVolumeLevel()
 
                 if 1 in count.values():
-                    if (currentVolume  >=volMin and currentVolume < volMax):
-                        if (currentVolume >=volMin and currentVolume <= -24.0  ):
-                            currentVolume+= 0.5
-                        elif (currentVolume > -24  and currentVolume <= -15.0 ):
+                    if volMin <= currentVolume < volMax:
+                        if volMin <= currentVolume <= -24.0:
+                            currentVolume += 0.5
+                        elif -24 < currentVolume <= -15.0:
                             currentVolume += 0.2
-                        elif (currentVolume > -15 and currentVolume <= -10):
+                        elif -15 < currentVolume <= -10:
                             currentVolume += 0.15
                         else:
-                            if(currentVolume+0.1<volMax):
+                            if currentVolume + 0.1 < volMax:
                                 currentVolume += 0.1
-                            else :
-                                currentVolume=volMax
+                            else:
+                                currentVolume = volMax
 
-                else :
-                    if (currentVolume  >= volMin and currentVolume <= volMax):
-                        if (currentVolume >=-10 and currentVolume <=volMax  ):
-                            currentVolume-= 0.05
-                        elif (currentVolume < -10  and currentVolume >= -15.0 ):
+                else:
+                    if volMin <= currentVolume <= volMax:
+                        if -10 <= currentVolume <= volMax:
+                            currentVolume -= 0.05
+                        elif -10 > currentVolume >= -15.0:
                             currentVolume -= 0.08
-                        elif (currentVolume < -15 and currentVolume >= -24):
+                        elif -15 > currentVolume >= -24:
                             currentVolume -= 0.1
                         else:
-                            if(currentVolume-0.4>volMin):
+                            if currentVolume - 0.4 > volMin:
                                 currentVolume -= 0.4
-                            else :
-                                currentVolume=volMin
+                            else:
+                                currentVolume = volMin
 
                 volume.SetMasterVolumeLevel(currentVolume, None)
 
@@ -296,5 +316,4 @@ while True:
     cv2.imshow('Image', img)
 
     if cv2.waitKey(1) & 0xff == ord('q'):
-     break
-
+        break
