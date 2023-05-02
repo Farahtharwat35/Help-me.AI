@@ -1,11 +1,5 @@
 import cv2
 import mediapipe as mp
-from math import hypot
-from ctypes import cast, POINTER
-from comtypes import CLSCTX_ALL
-from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
-import numpy as np
-import matplotlib.pyplot as plt
 import Integrator
 
 #####Detecting, initializing, and configuring the hands#####
@@ -209,16 +203,6 @@ cap = cv2.VideoCapture(0)  # default 0
 # cap.set(3,1280) to make a specific window with resolution 960*1280
 # cap.set(4,960)
 
-
-#####Accessing the speaker#####
-devices = AudioUtilities.GetSpeakers()
-interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
-volume = cast(interface, POINTER(IAudioEndpointVolume))
-
-#####Volume Range#####
-volMin, volMax = volume.GetVolumeRange()[:2]
-print(volMin, volMax)
-volumeFlag = False
 flag1 = [True]
 modules = []
 while True:
@@ -258,6 +242,9 @@ while True:
         elif "ONE SIGN" in myGesture.values():
             Integrator.gestureChooser_main("ONE SIGN", flag1, modules)
 
+        elif "PEACE SIGN" in myGesture.values():
+            Integrator.gestureChooser_main("PEACE SIGN", flag1, modules)
+
         for handlandmark in results.multi_hand_landmarks:
             # This line loops through each individual landmark point in the currentVolume set of hand landmarks.
             # The landmark property of the handlandmark object contains a list of 21 (x, y, z) coordinates for each hand landmark detected in the image or video frame.
@@ -268,50 +255,6 @@ while True:
                 # This gives the pixel coordinates of the landmark point in the image.
                 lmList.append([id, cx, cy])
             mpDraw.draw_landmarks(img, handlandmark, mpHands.HAND_CONNECTIONS)  # draw all the landmarks
-
-    if lmList != []:
-
-        ##Set MasterVolume
-        if volumeFlag:
-            if 1 in count.values() or 2 in count.values():
-                ##converting hand range to volume range
-                # vol = np.interp(length, [60, 260], [volMin, volMax])
-                # #print(vol, length)  # for debugging
-                currentVolume = volume.GetMasterVolumeLevel()
-
-                if 1 in count.values():
-                    if volMin <= currentVolume < volMax:
-                        if volMin <= currentVolume <= -24.0:
-                            currentVolume += 0.5
-                        elif -24 < currentVolume <= -15.0:
-                            currentVolume += 0.2
-                        elif -15 < currentVolume <= -10:
-                            currentVolume += 0.15
-                        else:
-                            if currentVolume + 0.1 < volMax:
-                                currentVolume += 0.1
-                            else:
-                                currentVolume = volMax
-
-                else:
-                    if volMin <= currentVolume <= volMax:
-                        if -10 <= currentVolume <= volMax:
-                            currentVolume -= 0.05
-                        elif -10 > currentVolume >= -15.0:
-                            currentVolume -= 0.08
-                        elif -15 > currentVolume >= -24:
-                            currentVolume -= 0.1
-                        else:
-                            if currentVolume - 0.4 > volMin:
-                                currentVolume -= 0.4
-                            else:
-                                currentVolume = volMin
-
-                volume.SetMasterVolumeLevel(currentVolume, None)
-
-        if "FIST SIGN" in myGesture.values():
-            print("Fist!!")
-            volumeFlag = False
 
     cv2.imshow('Image', img)
 

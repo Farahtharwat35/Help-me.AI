@@ -1,1 +1,2 @@
-HIGH-FIVE SIGN/screenShot/take_screenshot/TRUE
+HIGH-FIVE SIGN/Volume/Enter/TRUE/
+ONE SIGN/screenShot/take_screenshot/False/
