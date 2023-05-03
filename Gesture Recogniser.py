@@ -88,10 +88,11 @@ def countFingers(image, results, draw=True, display=True):
     # Check if the total count of the fingers of both hands are specified to be written on the output image.
     if draw:
         # Write the total count of the fingers of both hands on the output image.
-        cv2.putText(output_image, " Total Fingers: ", (10, 25), cv2.FONT_HERSHEY_COMPLEX, 1, (20, 255, 155), 2)
-        cv2.putText(output_image, str(sum(count.values())), (width // 2 - 150, 240), cv2.FONT_HERSHEY_SIMPLEX,
-                    8.9, (20, 255, 155), 10, 10)
-
+        text = "Detected " + str(sum(count.values())) + " Fingers"
+        text_size = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 1, 2)[0]
+        text_x = 10
+        cv2.putText(output_image, text, (text_x, 25), cv2.FONT_HERSHEY_SIMPLEX,
+                    1, (60, 179, 113), 2)
         # Return the output image, the status of each finger and the count of the fingers up of both hands.
     return output_image, fingers_statuses, count
 
@@ -123,7 +124,7 @@ def recognizeGestures(image, fingers_statuses, count):
         ####################################################################################################################
 
         # Check if the person is making the 'SPIDERMAN' gesture with the hand.
-        ##########################################################################################################################################################
+        ####################################################################################################################
 
         # Check if the number of fingers up is 3 and the fingers that are up, are the thumb, index and the pinky finger.
         elif count[hand_label] == 3 and fingers_statuses[hand_label + '_THUMB'] and fingers_statuses[
@@ -133,7 +134,7 @@ def recognizeGestures(image, fingers_statuses, count):
             hands_gestures[hand_label] = "SPIDERMAN SIGN"
             print("Spider SIGN")
 
-        ##########################################################################################################################################################
+        ####################################################################################################################
 
         # Check if the person is making the 'HIGH-FIVE' gesture with the hand.
         ####################################################################################################################
@@ -153,7 +154,7 @@ def recognizeGestures(image, fingers_statuses, count):
             hands_gestures[hand_label] = "FIST SIGN"
             print("FIST SIGN")
 
-        ##########################################################################################################################################################
+        #####################################################################################################################
 
         elif count[hand_label] == 2 and fingers_statuses[hand_label + '_THUMB'] and fingers_statuses[
             hand_label + '_PINKY']:
@@ -162,7 +163,7 @@ def recognizeGestures(image, fingers_statuses, count):
             hands_gestures[hand_label] = "CALL SIGN"
             print("CALL SIGN")
 
-        ##########################################################################################################################################################
+        #####################################################################################################################
 
         elif count[hand_label] == 3 and fingers_statuses[hand_label + '_MIDDLE'] and fingers_statuses[
             hand_label + '_PINKY'] and fingers_statuses[hand_label + '_RING']:
@@ -171,7 +172,7 @@ def recognizeGestures(image, fingers_statuses, count):
             hands_gestures[hand_label] = "PERFECTO SIGN"
             print("PERFECTO SIGN")
 
-        ##########################################################################################################################################################
+        #####################################################################################################################
 
         elif count[hand_label] == 1 and fingers_statuses[hand_label + '_INDEX']:
 
@@ -179,14 +180,14 @@ def recognizeGestures(image, fingers_statuses, count):
             hands_gestures[hand_label] = "ONE SIGN"
             print("ONE SIGN")
 
-        #############################################################################################################################################################
+        ######################################################################################################################
         elif count[hand_label] == 1 and fingers_statuses[hand_label + '_THUMB_UP']:
 
             # Update the gesture value of the hand that we are iterating upon to ONE SIGN WITH INDEX.
             hands_gestures[hand_label] = "THUMB UP SIGN"
             print("THUMB UP SIGN")
 
-        #############################################################################################################################################################
+        ######################################################################################################################
 
         elif count[hand_label] == 1 and fingers_statuses[hand_label + '_THUMB_DOWN']:
 
@@ -194,14 +195,15 @@ def recognizeGestures(image, fingers_statuses, count):
             hands_gestures[hand_label] = "THUMB DOWN SIGN"
             print("THUMB DOWN SIGN")
 
-        #############################################################################################################################################################
+        #######################################################################################################################
         # Return the output image and the gestures of the both hands.
         return output_image, hands_gestures
 
 
 cap = cv2.VideoCapture(0)  # default 0
-# cap.set(3,1280) to make a specific window with resolution 960*1280
-# cap.set(4,960)
+# to make a specific window with resolution 960*1280
+# cap.set(3, 1280)
+# cap.set(4, 960)
 
 flag1 = [True]
 modules = []

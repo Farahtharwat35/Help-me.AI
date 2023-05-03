@@ -1,6 +1,8 @@
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 from ctypes import cast, POINTER
 from comtypes import CLSCTX_ALL
+import subprocess
+import pyautogui
 #####Accessing the speaker#####
 devices = AudioUtilities.GetSpeakers()
 interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
@@ -10,7 +12,7 @@ volMin, volMax = volume.GetVolumeRange()[:2]
 
 
 def Enter():
-    print("Entered Volume")
+    print("Entered Controls:...")
 def VolumeUP():
     currentVolume = volume.GetMasterVolumeLevel()
     if volMin <= currentVolume < volMax:
@@ -43,3 +45,15 @@ def VolumeDOWN():
                 currentVolume = volMin
     # print(volMin, volMax)
     volume.SetMasterVolumeLevel(currentVolume, None)
+
+# Mina
+def scrollUP():
+    pyautogui.scroll(25)
+    print("SCROLLING UPPP")
+def scrollDOWN():
+    pyautogui.scroll(-25)
+    print("SCROLLING DOWN")
+# Brwana
+def open_program(program):
+    print(f"opening program {program}")
+    subprocess.call([program])
