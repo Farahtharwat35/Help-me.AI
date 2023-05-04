@@ -1,24 +1,25 @@
 
 from selenium import webdriver
+import pickle
 from selenium.webdriver.remote import webelement
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 import time
 
-
-# def open_whatsapp_and_send_message(person, message):
-#     driver = open_whatsapp()
-#     search_for_contact(person, driver)
-#     send_whatsapp_message(message, driver)
 newdriver = None
+
 
 def open_whatsapp():
     global newdriver
-    driver = webdriver.Chrome()
+    options = webdriver.ChromeOptions()
+    options.add_argument("user-data-dir=C:\\Users\\Farah Tharwat\\AppData\\Local\\Google\\Chrome\\User Data\\Default")  # Path to chrome profile
+    driver = webdriver.Chrome(executable_path="C:\\Users\\Farah Tharwat\\Downloads\\chromedriver_win32\\chromedriver.exe", options=options)
     driver.get("http://web.whatsapp.com")
-    input()
+    #input()
     newdriver = driver
 
 
