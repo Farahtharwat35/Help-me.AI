@@ -20,6 +20,7 @@ def open_whatsapp():
     driver = webdriver.Chrome(executable_path="C:\\Users\\Farah Tharwat\\Downloads\\chromedriver_win32\\chromedriver.exe", options=options)
     driver.get("http://web.whatsapp.com")
     #input()
+
     newdriver = driver
 
 
