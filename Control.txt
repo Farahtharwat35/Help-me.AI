@@ -1,5 +1,5 @@
 ONE SIGN/Control/VolumeUP
 PEACE SIGN/Control/VolumeDOWN
-SPIDERMAN SIGN/Control/scrollUP
 CALL SIGN/Control/scrollDOWN
-PERFECTO SIGN/Control/open_program/Spotify
+SPIDERMAN SIGN/Control/scrollUP
+PERFECTO SIGN/Control/open_program/Notepad

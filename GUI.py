@@ -1,80 +1,303 @@
-import tkinter as tk
-from tkinter import ttk
+import customtkinter
+import controller
 
-# Create the main window
-root = tk.Tk()
-root.title("GUI")
-root.geometry("1366x768")
-root.resizable(width=False, height=False)
 
-# image_file = "Artboard 1.png"
-# try:
-#     image = tk.PhotoImage(file=image_file)
-# except tk.TclError as e:
-#     print("Error loading image:", e)
-#     root.quit()
-# Load the background image
-# PUT YOUR BACKGROUND HERE>>>>>>>>>
-# bg_image = tk.PhotoImage(file="Artboard 1.png")
-#
-# # Create a label with the background image and add it to the main window
-# bg_label = tk.Label(root, image=bg_image)
-# bg_label.place(x=0, y=0, relwidth=1, relheight=1)
+# todo set value send nothing
+# todo edit window to be in center
+# todo handle exceptions
 
-# Create the five buttons
-whatsapp_button = tk.Button(root, text="Whatsapp", width=20, height=5, command=lambda: create_window("Whatsapp"))
-navigate_button = tk.Button(root, text="Navigate", width=20, height=5, command=lambda: create_window("Navigate"))
-control_button = tk.Button(root, text="Control", width=20, height=5, command=lambda: create_window("Control"))
-anghami_button = tk.Button(root, text="Anghami", width=20, height=5, command=lambda: create_window("Anghami"))
-screenshot_button = tk.Button(root, text="screenShot", width=20, height=5, command=lambda: create_window("screenShot"))
 
-# Center the five buttons on the main window
-whatsapp_button.place(relx=0.5, rely=0.3, anchor="center")
-navigate_button.place(relx=0.5, rely=0.4, anchor="center")
-control_button.place(relx=0.5, rely=0.5, anchor="center")
-anghami_button.place(relx=0.5, rely=0.6, anchor="center")
-screenshot_button.place(relx=0.5, rely=0.7, anchor="center")
+def run(runfile):
+    module = __import__('Gesture_Recogniser')
+    with open(runfile, "r") as rnf:
+        exec(rnf.read())
 
-# Function to create a new window for each button
+
+def create_screen(button_name):
+    global label
+    global button1
+    global button2
+    global button_label
+    global whatsapp_button
+    global navigate_button
+    global control_button
+    global anghami_button
+    global screenshot_button
+    global back_button
+
+    if button_name == "Start":
+        label = customtkinter.CTkLabel(master=root, text="Help me.AI", font=('Cooper Black', 80), text_color="#1B4769")
+        label.pack(pady=100, padx=10)
+        button1 = customtkinter.CTkButton(master=root, text="Start", width=120, height=60,
+                                          fg_color="#1B4769", command=lambda: run("Gesture_Recogniser.py"))
+        button1.place(relx=0.44, rely=0.6)
+        button2 = customtkinter.CTkButton(master=root, text="Customize", width=120, height=60,
+                                          fg_color="#1B4769", command=lambda: create_screen("Customize"))
+        button2.place(relx=0.44, rely=0.8)
+
+    if button_name == "Customize":
+        label.destroy()
+        button1.destroy()
+        button2.destroy()
+
+        button_label = customtkinter.CTkLabel(root, text="Options", font=("Cooper Black", 30), text_color="#1B4769")
+        button_label.place(x=30, y=30)
+
+        whatsapp_button = customtkinter.CTkButton(root, text="Whatsapp", font=("Georgia", 14), width=100, height=100,
+                                                  fg_color="#1B4769", command=lambda: create_window("Whatsapp"))
+        whatsapp_button.place(x=350, y=100)
+
+        navigate_button = customtkinter.CTkButton(root, text="Navigate", font=("Georgia", 14), width=100, height=100,
+                                                  fg_color="#1B4769", command=lambda: create_window("Navigate"))
+        navigate_button.place(x=500, y=100)
+
+        control_button = customtkinter.CTkButton(root, text="Control", font=("Georgia", 14), width=100, height=100,
+                                                 fg_color="#1B4769", command=lambda: create_window("Control"))
+        control_button.place(x=500, y=250)
+
+        anghami_button = customtkinter.CTkButton(root, text="Anghami", font=("Georgia", 14), width=100, height=100,
+                                                 fg_color="#1B4769", command=lambda: create_window("Anghami"))
+        anghami_button.place(x=350, y=250)
+
+        screenshot_button = customtkinter.CTkButton(root, text="ScreenShot", font=("Georgia", 14), width=100,
+                                                    height=100,
+                                                    fg_color="#1B4769", command=lambda: create_window("ScreenShot"))
+        screenshot_button.place(x=425, y=400)
+
+        back_button = customtkinter.CTkButton(root, text="Back", font=("Georgia", 14), width=100, height=30,
+                                              fg_color="#1B4769", command=lambda: create_screen("Back"))
+        back_button.place(x=50, y=550)
+
+    if button_name == "Back":
+        button_label.destroy()
+        whatsapp_button.destroy()
+        navigate_button.destroy()
+        control_button.destroy()
+        anghami_button.destroy()
+        screenshot_button.destroy()
+        back_button.destroy()
+
+        label = customtkinter.CTkLabel(master=root, text="Help me.AI", font=('Cooper Black', 80), text_color="#1B4769")
+        label.pack(pady=100, padx=10)
+        button1 = customtkinter.CTkButton(master=root, text="Start", width=120, height=60,
+                                          fg_color="#1B4769", command=lambda: run("Gesture_Recogniser.py"))
+        button1.place(relx=0.44, rely=0.6)
+        button2 = customtkinter.CTkButton(master=root, text="Customize", width=120, height=60,
+                                          fg_color="#1B4769", command=lambda: create_screen("Customize"))
+        button2.place(relx=0.44, rely=0.8)
+
+
 def create_window(button_name):
-    new_window = tk.Toplevel(root)
-    new_window.title(button_name)
-    new_window.geometry("500x300")
-    new_window.resizable(width=False, height=False)
+    if button_name == "Control":
+        window1 = customtkinter.CTkToplevel(root, fg_color="#AAC7D8")
+        window1.geometry("500x300")
+        window1.resizable(False, False)
+        window1.title(button_name)
+        window1.attributes('-topmost', True)
+        window1.geometry("+{}+{}".format(653, 300))
 
-    # Add the label, combo box, text box, and save button to the new window
-    button_label = tk.Label(new_window, text=button_name, font=("Arial Bold", 14))
-    button_label.place(x=10, y=10)
+        button_label = customtkinter.CTkLabel(window1, text=button_name, font=("Georgia", 24), text_color="#1B4769")
+        button_label.place(x=10, y=10)
 
-    combo_label = tk.Label(new_window, text="Open Gesture", font=("Arial Bold", 10))
-    combo_label.place(x=10, y=50)
+        open_Gesturebox = customtkinter.CTkComboBox(master=window1, border_color="#1B4769",
+                                                    values=(
+                                                        "HIGH-FIVE", "PEACE", "ONE", "SPIDERMAN", "CALL", "PERFECTO"))
+        open_Gesturebox.set("")
+        open_Gesturebox.place(x=150, y=40)
 
-    combo_box = ttk.Combobox(new_window, width=15)
-    combo_box["values"] = ("Value 1", "Value 2", "Value 3")
-    combo_box.current(0)
-    combo_box.place(x=120, y=50)
+        label_openGesture = customtkinter.CTkLabel(window1, text="Open Gesture:",
+                                                   font=("Georgia", 14), text_color="#1B4769")
+        label_openGesture.place(x=50, y=40)
 
-    gesture_label = tk.Label(new_window, text="Gesture", font=("Arial Bold", 12))
-    gesture_label.place(x=10, y=100)
+        Gesturebox = customtkinter.CTkComboBox(master=window1, border_color="#1B4769",
+                                               values=("HIGH-FIVE", "PEACE", "ONE", "SPIDERMAN", "CALL", "PERFECTO"))
+        Gesturebox.set("")
+        Gesturebox.place(x=150, y=80)
 
-    gesture_box = ttk.Combobox(new_window, width=15)
-    gesture_box["values"] = ("Gesture 1", "Gesture 2", "Gesture 3")
-    gesture_box.current(0)
-    gesture_box.place(x=120, y=100)
+        label_Gesture = customtkinter.CTkLabel(window1, text="Gesture:", font=("Georgia", 14), text_color="#1B4769")
+        label_Gesture.place(x=50, y=80)
 
-    function_label = tk.Label(new_window, text="Function", font=("Arial Bold", 12))
-    function_label.place(x=250, y=100)
+        function_box = customtkinter.CTkComboBox(master=window1, border_color="#1B4769",
+                                                 values=("Volume Up", "Volume Down", "Scroll Up", "Scroll Down",
+                                                         "Open Program"))
+        function_box.set("")
+        function_box.place(x=150, y=120)
 
-    function_box = ttk.Combobox(new_window, width=15)
-    function_box["values"] = ("Function 1", "Function 2", "Function 3")
-    function_box.current(0)
-    function_box.place(x=360, y=100)
+        label_function = customtkinter.CTkLabel(window1, text="Function:", font=("Georgia", 14), text_color="#1B4769")
+        label_function.place(x=50, y=120)
 
-    text_box = tk.Text(new_window, height=5, width=50)
-    text_box.place(x=10, y=150)
+        textbox = customtkinter.CTkEntry(master=window1, placeholder_text="Program name",
+                                         width=250, height=55, border_color="#1B4769")
+        textbox.place(x=150, y=160)
 
-    save_button = tk.Button(new_window, text="Save")
-    save_button.place(relx=0.5, rely=0.9, anchor="center")
+        save_button = customtkinter.CTkButton(window1, text="Save", fg_color="#1B4769",
+                                              command=lambda: controller.update_gesture(open_Gesturebox.get(),
+                                                                                        Gesturebox.get(), button_name,
+                                                                                        function_box.get(),
+                                                                                        textbox.get()))
+        save_button.place(x=250, y=250, anchor="center")
 
-# Run the main loop
+    if button_name == "Navigate":
+        window1 = customtkinter.CTkToplevel(root, fg_color="#AAC7D8")
+        window1.geometry("500x300")
+        window1.resizable(False, False)
+        window1.title(button_name)
+        window1.attributes('-topmost', True)
+        window1.geometry("+{}+{}".format(653, 300))
+
+        button_label = customtkinter.CTkLabel(window1, text=button_name, font=("Georgia", 24), text_color="#1B4769")
+        button_label.place(x=10, y=10)
+
+        open_Gesturebox = customtkinter.CTkComboBox(master=window1, border_color="#1B4769",
+                                                    values=(
+                                                        "HIGH-FIVE", "PEACE", "ONE", "SPIDERMAN", "CALL", "PERFECTO"))
+        open_Gesturebox.set("")
+        open_Gesturebox.place(x=150, y=60)
+
+        label_openGesture = customtkinter.CTkLabel(window1, text="Open Gesture:",
+                                                   font=("Georgia", 14), text_color="#1B4769")
+        label_openGesture.place(x=50, y=60)
+
+        Gesturebox = customtkinter.CTkComboBox(master=window1, border_color="#1B4769",
+                                               values=("HIGH-FIVE", "PEACE", "ONE", "SPIDERMAN", "CALL", "PERFECTO"))
+        Gesturebox.set("")
+        Gesturebox.place(x=150, y=100)
+
+        label_Gesture = customtkinter.CTkLabel(window1, text="Gesture:", font=("Georgia", 14), text_color="#1B4769")
+        label_Gesture.place(x=50, y=100)
+
+        textbox = customtkinter.CTkEntry(master=window1, placeholder_text="Type form/to dest",
+                                         width=250, height=55, border_color="#1B4769")
+        textbox.place(x=150, y=140)
+
+        save_button = customtkinter.CTkButton(window1, text="Save", fg_color="#1B4769",
+                                              command=lambda: controller.update_gesture(open_Gesturebox.get(),
+                                                                                        Gesturebox.get(), button_name,
+                                                                                        "", textbox.get()))
+        save_button.place(x=250, y=240, anchor="center")
+
+    if button_name == "Anghami":
+        window1 = customtkinter.CTkToplevel(root, fg_color="#AAC7D8")
+        window1.geometry("500x300")
+        window1.resizable(False, False)
+        window1.title(button_name)
+        window1.attributes('-topmost', True)
+        window1.geometry("+{}+{}".format(653, 300))
+
+        button_label = customtkinter.CTkLabel(window1, text=button_name, font=("Georgia", 24), text_color="#1B4769")
+        button_label.place(x=10, y=10)
+
+        open_Gesturebox = customtkinter.CTkComboBox(master=window1, border_color="#1B4769",
+                                                    values=(
+                                                        "HIGH-FIVE", "PEACE", "ONE", "SPIDERMAN", "CALL", "PERFECTO"))
+        open_Gesturebox.set("")
+        open_Gesturebox.place(x=150, y=60)
+
+        label_openGesture = customtkinter.CTkLabel(window1, text="Open Gesture:",
+                                                   font=("Georgia", 14), text_color="#1B4769")
+        label_openGesture.place(x=50, y=60)
+
+        Gesturebox = customtkinter.CTkComboBox(master=window1, border_color="#1B4769",
+                                               values=("HIGH-FIVE", "PEACE", "ONE", "SPIDERMAN", "CALL", "PERFECTO"))
+        Gesturebox.set("")
+        Gesturebox.place(x=150, y=100)
+
+        label_Gesture = customtkinter.CTkLabel(window1, text="Gesture:", font=("Georgia", 14), text_color="#1B4769")
+        label_Gesture.place(x=50, y=100)
+
+        textbox = customtkinter.CTkEntry(master=window1, placeholder_text="Playlist name",
+                                         width=250, height=55, border_color="#1B4769")
+        textbox.place(x=150, y=140)
+
+        save_button = customtkinter.CTkButton(window1, text="Save", fg_color="#1B4769",
+                                              command=lambda: controller.update_gesture(open_Gesturebox.get(),
+                                                                                        Gesturebox.get(), button_name,
+                                                                                        "", textbox.get()))
+        save_button.place(x=250, y=240, anchor="center")
+
+    if button_name == "ScreenShot":
+        window1 = customtkinter.CTkToplevel(root, fg_color="#AAC7D8")
+        window1.geometry("500x300")
+        window1.resizable(False, False)
+        window1.title(button_name)
+        window1.attributes('-topmost', True)
+        window1.geometry("+{}+{}".format(653, 300))
+
+        button_label = customtkinter.CTkLabel(window1, text=button_name, font=("Georgia", 24), text_color="#1B4769")
+        button_label.place(x=10, y=10)
+
+        open_Gesturebox = customtkinter.CTkComboBox(master=window1, width=150, height=40, border_color="#1B4769",
+                                                    values=(
+                                                        "HIGH-FIVE", "PEACE", "ONE", "SPIDERMAN", "CALL", "PERFECTO"))
+        open_Gesturebox.set("")
+        open_Gesturebox.place(x=175, y=100)
+
+        label_openGesture = customtkinter.CTkLabel(window1, text="Open Gesture:", font=("Georgia", 14),
+                                                   text_color="#1B4769")
+        label_openGesture.place(x=75, y=103)
+
+        save_button = customtkinter.CTkButton(window1, text="Save", fg_color="#1B4769",
+                                              command=lambda: controller.update_gesture(open_Gesturebox.get(), "",
+                                                                                        button_name, "", ""))
+        save_button.place(x=250, y=240, anchor="center")
+
+    if button_name == "Whatsapp":
+        window1 = customtkinter.CTkToplevel(root, fg_color="#AAC7D8")
+        window1.geometry("500x300")
+        window1.resizable(False, False)
+        window1.title(button_name)
+        window1.attributes('-topmost', True)
+        window1.geometry("+{}+{}".format(653, 300))
+
+        button_label = customtkinter.CTkLabel(window1, text=button_name, font=("Georgia", 24), text_color="#1B4769")
+        button_label.place(x=10, y=10)
+
+        open_Gesturebox = customtkinter.CTkComboBox(master=window1, border_color="#1B4769",
+                                                    values=(
+                                                        "HIGH-FIVE", "PEACE", "ONE", "SPIDERMAN", "CALL", "PERFECTO"))
+        open_Gesturebox.set("")
+        open_Gesturebox.place(x=150, y=40)
+
+        label_openGesture = customtkinter.CTkLabel(window1, text="Open Gesture:",
+                                                   font=("Georgia", 14), text_color="#1B4769")
+        label_openGesture.place(x=50, y=40)
+
+        Gesturebox = customtkinter.CTkComboBox(master=window1, border_color="#1B4769",
+                                               values=("HIGH-FIVE", "PEACE", "ONE", "SPIDERMAN", "CALL", "PERFECTO"))
+        Gesturebox.set("")
+        Gesturebox.place(x=150, y=80)
+
+        label_Gesture = customtkinter.CTkLabel(window1, text="Gesture:", font=("Georgia", 14), text_color="#1B4769")
+        label_Gesture.place(x=50, y=80)
+
+        function_box = customtkinter.CTkComboBox(master=window1, border_color="#1B4769",
+                                                 values=("Search Contact", "Send Message"))
+        function_box.set("")
+        function_box.place(x=150, y=120)
+
+        label_function = customtkinter.CTkLabel(window1, text="Function :", font=("Georgia", 14), text_color="#1B4769")
+        label_function.place(x=50, y=120)
+
+        textbox = customtkinter.CTkEntry(master=window1, width=250, height=55, border_color="#1B4769",
+                                         placeholder_text="Contact/Type message")
+        textbox.place(x=150, y=160)
+
+        save_button = customtkinter.CTkButton(window1, text="Save", fg_color="#1B4769",
+                                              command=lambda: controller.update_gesture(open_Gesturebox.get(),
+                                                                                        Gesturebox.get(), button_name,
+                                                                                        function_box.get(),
+                                                                                        textbox.get()))
+        save_button.place(x=250, y=250, anchor="center")
+
+
+customtkinter.set_appearance_mode("System")
+customtkinter.set_default_color_theme("dark-blue")
+root = customtkinter.CTk(fg_color="#AAC7D8")
+root.geometry("900x600")
+root.resizable(False, False)
+root.title("Help me.AI")
+root.geometry("+{}+{}".format(380, 150))
+create_screen("Start")
+
+
 root.mainloop()

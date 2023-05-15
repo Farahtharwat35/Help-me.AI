@@ -1,4 +1,3 @@
-
 from selenium import webdriver
 import pickle
 from selenium.webdriver.remote import webelement
@@ -16,8 +15,8 @@ newdriver = None
 def open_whatsapp():
     global newdriver
     options = webdriver.ChromeOptions()
-    options.add_argument("user-data-dir=C:\\Users\\Farah Tharwat\\AppData\\Local\\Google\\Chrome\\User Data\\Default")  # Path to chrome profile
-    driver = webdriver.Chrome(executable_path="C:\\Users\\Farah Tharwat\\Downloads\\chromedriver_win32\\chromedriver.exe", options=options)
+    options.add_argument("user-data-dir=C:\\Users\\rafik\\AppData\\Local\\Google\\Chrome\\User Data\\Default")  # Path to chrome profile
+    driver = webdriver.Chrome(executable_path="D:\\Ain Shams University\\Junior\\Semester 6\\Artificial Intelligence\\Project essentials\\chromedriver.exe", options=options)
     driver.get("http://web.whatsapp.com")
     #input()
 

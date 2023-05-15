@@ -202,8 +202,8 @@ def recognizeGestures(image, fingers_statuses, count):
 
 cap = cv2.VideoCapture(0)  # default 0
 # to make a specific window with resolution 960*1280
-# cap.set(3, 1280)
-# cap.set(4, 960)
+cap.set(3, 1280)
+cap.set(4, 960)
 
 flag1 = [True]
 modules = []

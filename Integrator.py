@@ -1,11 +1,10 @@
 # This file is for Integrating all functions into the system
 # This function chooses the first gesture which is the start of every sequence of gestures.
 # Then the other functions are focused on executing the sequence
-import time
-#TODO:Try to make one function @Farah
+# import time
 def gestureChooser_main(gesture, flag1, modules):
     if flag1[0]:
-        with open('gestures.txt', 'r') as file:
+        with open('Gestures.txt', 'r') as file:
             lines = file.readlines()
             for line in lines:
                 columns = line.split('/')
@@ -27,7 +26,7 @@ def gestureChooser_main(gesture, flag1, modules):
 
 
 def gestureChooser_side(gesture, flag1, modules):
-    print("Da5alttttttttt")
+    #print("Da5alttttttttt")
     print(modules)
     with open(modules[-1] + '.txt', 'r') as file:
         lines = file.readlines()
