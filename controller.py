@@ -43,6 +43,7 @@ functions = {
     "Navigate": "SIGN/Navigate/navigate/",
     "Search Contact": "SIGN/Whatsapp/search_for_contact/",
     "Send Message": "SIGN/Whatsapp/send_whatsapp_message/",
+    "Open Mic": "SIGN/Whatsapp/Open_mic",
 }
 
 

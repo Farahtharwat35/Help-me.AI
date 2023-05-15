@@ -254,7 +254,7 @@ def create_window(button_name):
 
         open_Gesturebox = customtkinter.CTkComboBox(master=window1, border_color="#1B4769",
                                                     values=(
-                                                        "HIGH-FIVE", "PEACE", "ONE", "SPIDERMAN", "CALL", "PERFECTO"))
+                                                        "HIGH-FIVE", "PEACE", "ONE", "CALL", "PERFECTO"))
         open_Gesturebox.set("")
         open_Gesturebox.place(x=150, y=40)
 
@@ -263,7 +263,7 @@ def create_window(button_name):
         label_openGesture.place(x=50, y=40)
 
         Gesturebox = customtkinter.CTkComboBox(master=window1, border_color="#1B4769",
-                                               values=("HIGH-FIVE", "PEACE", "ONE", "SPIDERMAN", "CALL", "PERFECTO"))
+                                               values=("HIGH-FIVE", "PEACE", "ONE", "CALL", "PERFECTO"))
         Gesturebox.set("")
         Gesturebox.place(x=150, y=80)
 
@@ -271,7 +271,7 @@ def create_window(button_name):
         label_Gesture.place(x=50, y=80)
 
         function_box = customtkinter.CTkComboBox(master=window1, border_color="#1B4769",
-                                                 values=("Search Contact", "Send Message"))
+                                                 values=("Search Contact", "Send Message", "Open Mic"))
         function_box.set("")
         function_box.place(x=150, y=120)
 

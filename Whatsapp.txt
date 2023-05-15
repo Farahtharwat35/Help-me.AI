@@ -1,2 +1,3 @@
-PEACE SIGN/Whatsapp/search_for_contact/Rafik
-ONE SIGN/Whatsapp/send_whatsapp_message/Hello
+PEACE SIGN/Whatsapp/search_for_contact/Ai
+ONE SIGN/Whatsapp/send_whatsapp_message/HELLO
+PERFECTO SIGN/Whatsapp/Open_mic
