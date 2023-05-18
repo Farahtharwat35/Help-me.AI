@@ -1,10 +1,6 @@
 import customtkinter
 import controller
-
-
-# todo set value send nothing
-# todo edit window to be in center
-# todo handle exceptions
+import tkinter
 
 
 def run(runfile):
@@ -12,6 +8,10 @@ def run(runfile):
     with open(runfile, "r") as rnf:
         exec(rnf.read())
 
+#todo: bring to top
+def checkValidity(valid):
+    if not valid:
+        tkinter.messagebox.showerror("Invalid Parameter", "Check your parameters")
 
 def create_screen(button_name):
     global label
@@ -99,7 +99,7 @@ def create_window(button_name):
         button_label = customtkinter.CTkLabel(window1, text=button_name, font=("Georgia", 24), text_color="#1B4769")
         button_label.place(x=10, y=10)
 
-        open_Gesturebox = customtkinter.CTkComboBox(master=window1, border_color="#1B4769",
+        open_Gesturebox = customtkinter.CTkComboBox(master=window1, border_color="#1B4769", state="readonly",
                                                     values=(
                                                         "HIGH-FIVE", "PEACE", "ONE", "SPIDERMAN", "CALL", "PERFECTO"))
         open_Gesturebox.set("")
@@ -109,7 +109,7 @@ def create_window(button_name):
                                                    font=("Georgia", 14), text_color="#1B4769")
         label_openGesture.place(x=50, y=40)
 
-        Gesturebox = customtkinter.CTkComboBox(master=window1, border_color="#1B4769",
+        Gesturebox = customtkinter.CTkComboBox(master=window1, border_color="#1B4769", state="readonly",
                                                values=("HIGH-FIVE", "PEACE", "ONE", "SPIDERMAN", "CALL", "PERFECTO"))
         Gesturebox.set("")
         Gesturebox.place(x=150, y=80)
@@ -117,7 +117,7 @@ def create_window(button_name):
         label_Gesture = customtkinter.CTkLabel(window1, text="Gesture:", font=("Georgia", 14), text_color="#1B4769")
         label_Gesture.place(x=50, y=80)
 
-        function_box = customtkinter.CTkComboBox(master=window1, border_color="#1B4769",
+        function_box = customtkinter.CTkComboBox(master=window1, border_color="#1B4769", state="readonly",
                                                  values=("Volume Up", "Volume Down", "Scroll Up", "Scroll Down",
                                                          "Open Program"))
         function_box.set("")
@@ -131,10 +131,10 @@ def create_window(button_name):
         textbox.place(x=150, y=160)
 
         save_button = customtkinter.CTkButton(window1, text="Save", fg_color="#1B4769",
-                                              command=lambda: controller.update_gesture(open_Gesturebox.get(),
+                                              command=lambda: checkValidity(controller.update_gesture(open_Gesturebox.get(),
                                                                                         Gesturebox.get(), button_name,
                                                                                         function_box.get(),
-                                                                                        textbox.get()))
+                                                                                        textbox.get())))
         save_button.place(x=250, y=250, anchor="center")
 
     if button_name == "Navigate":
@@ -148,7 +148,7 @@ def create_window(button_name):
         button_label = customtkinter.CTkLabel(window1, text=button_name, font=("Georgia", 24), text_color="#1B4769")
         button_label.place(x=10, y=10)
 
-        open_Gesturebox = customtkinter.CTkComboBox(master=window1, border_color="#1B4769",
+        open_Gesturebox = customtkinter.CTkComboBox(master=window1, border_color="#1B4769",state="readonly",
                                                     values=(
                                                         "HIGH-FIVE", "PEACE", "ONE", "SPIDERMAN", "CALL", "PERFECTO"))
         open_Gesturebox.set("")
@@ -158,7 +158,7 @@ def create_window(button_name):
                                                    font=("Georgia", 14), text_color="#1B4769")
         label_openGesture.place(x=50, y=60)
 
-        Gesturebox = customtkinter.CTkComboBox(master=window1, border_color="#1B4769",
+        Gesturebox = customtkinter.CTkComboBox(master=window1, border_color="#1B4769", state="readonly",
                                                values=("HIGH-FIVE", "PEACE", "ONE", "SPIDERMAN", "CALL", "PERFECTO"))
         Gesturebox.set("")
         Gesturebox.place(x=150, y=100)
@@ -171,9 +171,9 @@ def create_window(button_name):
         textbox.place(x=150, y=140)
 
         save_button = customtkinter.CTkButton(window1, text="Save", fg_color="#1B4769",
-                                              command=lambda: controller.update_gesture(open_Gesturebox.get(),
+                                              command=lambda: checkValidity(controller.update_gesture(open_Gesturebox.get(),
                                                                                         Gesturebox.get(), button_name,
-                                                                                        "", textbox.get()))
+                                                                                        "", textbox.get())))
         save_button.place(x=250, y=240, anchor="center")
 
     if button_name == "Anghami":
@@ -187,7 +187,7 @@ def create_window(button_name):
         button_label = customtkinter.CTkLabel(window1, text=button_name, font=("Georgia", 24), text_color="#1B4769")
         button_label.place(x=10, y=10)
 
-        open_Gesturebox = customtkinter.CTkComboBox(master=window1, border_color="#1B4769",
+        open_Gesturebox = customtkinter.CTkComboBox(master=window1, border_color="#1B4769", state="readonly",
                                                     values=(
                                                         "HIGH-FIVE", "PEACE", "ONE", "SPIDERMAN", "CALL", "PERFECTO"))
         open_Gesturebox.set("")
@@ -197,7 +197,7 @@ def create_window(button_name):
                                                    font=("Georgia", 14), text_color="#1B4769")
         label_openGesture.place(x=50, y=60)
 
-        Gesturebox = customtkinter.CTkComboBox(master=window1, border_color="#1B4769",
+        Gesturebox = customtkinter.CTkComboBox(master=window1, border_color="#1B4769", state="readonly",
                                                values=("HIGH-FIVE", "PEACE", "ONE", "SPIDERMAN", "CALL", "PERFECTO"))
         Gesturebox.set("")
         Gesturebox.place(x=150, y=100)
@@ -210,9 +210,9 @@ def create_window(button_name):
         textbox.place(x=150, y=140)
 
         save_button = customtkinter.CTkButton(window1, text="Save", fg_color="#1B4769",
-                                              command=lambda: controller.update_gesture(open_Gesturebox.get(),
+                                              command=lambda: checkValidity(controller.update_gesture(open_Gesturebox.get(),
                                                                                         Gesturebox.get(), button_name,
-                                                                                        "", textbox.get()))
+                                                                                        "", textbox.get())))
         save_button.place(x=250, y=240, anchor="center")
 
     if button_name == "ScreenShot":
@@ -226,7 +226,7 @@ def create_window(button_name):
         button_label = customtkinter.CTkLabel(window1, text=button_name, font=("Georgia", 24), text_color="#1B4769")
         button_label.place(x=10, y=10)
 
-        open_Gesturebox = customtkinter.CTkComboBox(master=window1, width=150, height=40, border_color="#1B4769",
+        open_Gesturebox = customtkinter.CTkComboBox(master=window1, width=150, height=40, border_color="#1B4769", state="readonly",
                                                     values=(
                                                         "HIGH-FIVE", "PEACE", "ONE", "SPIDERMAN", "CALL", "PERFECTO"))
         open_Gesturebox.set("")
@@ -237,8 +237,8 @@ def create_window(button_name):
         label_openGesture.place(x=75, y=103)
 
         save_button = customtkinter.CTkButton(window1, text="Save", fg_color="#1B4769",
-                                              command=lambda: controller.update_gesture(open_Gesturebox.get(), "",
-                                                                                        button_name, "", ""))
+                                              command=lambda: checkValidity(controller.update_gesture(open_Gesturebox.get(), "",
+                                                                                        button_name, "", "")))
         save_button.place(x=250, y=240, anchor="center")
 
     if button_name == "Whatsapp":
@@ -252,7 +252,7 @@ def create_window(button_name):
         button_label = customtkinter.CTkLabel(window1, text=button_name, font=("Georgia", 24), text_color="#1B4769")
         button_label.place(x=10, y=10)
 
-        open_Gesturebox = customtkinter.CTkComboBox(master=window1, border_color="#1B4769",
+        open_Gesturebox = customtkinter.CTkComboBox(master=window1, border_color="#1B4769", state="readonly",
                                                     values=(
                                                         "HIGH-FIVE", "PEACE", "ONE", "CALL", "PERFECTO"))
         open_Gesturebox.set("")
@@ -262,7 +262,7 @@ def create_window(button_name):
                                                    font=("Georgia", 14), text_color="#1B4769")
         label_openGesture.place(x=50, y=40)
 
-        Gesturebox = customtkinter.CTkComboBox(master=window1, border_color="#1B4769",
+        Gesturebox = customtkinter.CTkComboBox(master=window1, border_color="#1B4769", state="readonly",
                                                values=("HIGH-FIVE", "PEACE", "ONE", "CALL", "PERFECTO"))
         Gesturebox.set("")
         Gesturebox.place(x=150, y=80)
@@ -270,7 +270,7 @@ def create_window(button_name):
         label_Gesture = customtkinter.CTkLabel(window1, text="Gesture:", font=("Georgia", 14), text_color="#1B4769")
         label_Gesture.place(x=50, y=80)
 
-        function_box = customtkinter.CTkComboBox(master=window1, border_color="#1B4769",
+        function_box = customtkinter.CTkComboBox(master=window1, border_color="#1B4769", state="readonly",
                                                  values=("Search Contact", "Send Message", "Open Mic"))
         function_box.set("")
         function_box.place(x=150, y=120)
@@ -283,10 +283,10 @@ def create_window(button_name):
         textbox.place(x=150, y=160)
 
         save_button = customtkinter.CTkButton(window1, text="Save", fg_color="#1B4769",
-                                              command=lambda: controller.update_gesture(open_Gesturebox.get(),
+                                              command=lambda: checkValidity(controller.update_gesture(open_Gesturebox.get(),
                                                                                         Gesturebox.get(), button_name,
                                                                                         function_box.get(),
-                                                                                        textbox.get()))
+                                                                                        textbox.get())))
         save_button.place(x=250, y=250, anchor="center")
 
 

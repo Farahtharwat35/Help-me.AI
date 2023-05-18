@@ -64,7 +64,6 @@ def whatsapp_update(gesture, function, params):
 
     whatsapp_dic[gesture] = new_function
 
-    # todo: check if the another function has the same sign to avoid overwritten
     txt = ""
     for key, value in whatsapp_dic.items():
         txt += f"{key} {value}\n"
@@ -81,8 +80,6 @@ def navigate_update(gesture, location):
         del navigate_dic[key.pop()]
 
     navigate_dic[gesture] = new_function
-
-    # todo: check if the another function has the same sign to avoid overwritten
     txt = ""
     for key, value in navigate_dic.items():
         txt += f"{key} {value}\n"
@@ -103,7 +100,6 @@ def control_update(gesture, function, program):
 
     control_dic[gesture] = new_function
 
-    # todo: check if the another function has the same sign to avoid overwritten
     txt = ""
     for key, value in control_dic.items():
         txt += f"{key} {value}\n"
@@ -121,7 +117,6 @@ def anghami_update(gesture, playlist):
 
     anghami_dic[gesture] = new_function
 
-    # todo: check if the another function has the same sign to avoid overwritten
     txt = ""
     for key, value in anghami_dic.items():
         txt += f"{key} {value}\n"
@@ -129,17 +124,13 @@ def anghami_update(gesture, playlist):
     open("Anghami.txt", "w+").write(txt)
     txt_emptylines("Anghami.txt")
 
-
+#prevent overwritten in text files
 def update_gesture(entry_gesture, gesture, module, function, params):
-    # todo check that the two gestures are not the same
-    '''
-     if entry_gesture in gesture_dic:
-         print("Gesture Already used")
-         return False
-    '''
+
+    if not entry_gesture or not gesture:
+        return False
 
     if entry_gesture == gesture:
-        ' print("Same Gesture used") '
         return False
 
     key = {i for i in gesture_dic if gesture_dic[i] == modules[module]}
@@ -148,7 +139,6 @@ def update_gesture(entry_gesture, gesture, module, function, params):
 
     gesture_dic[entry_gesture] = modules[module]
 
-    # todo: check if the another function has the same sign to avoid overwritten
     txt = ""
     for key, value in gesture_dic.items():
         txt += f"{key} {value}\n"
