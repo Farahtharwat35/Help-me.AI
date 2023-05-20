@@ -8,7 +8,6 @@ def run(runfile):
     with open(runfile, "r") as rnf:
         exec(rnf.read())
 
-#todo: bring to top
 def checkValidity(valid):
     if not valid:
         tkinter.messagebox.showerror("Invalid Parameter", "Check your parameters")

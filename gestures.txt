@@ -1,5 +1,5 @@
-PEACE SIGN/Navigate/Enter/TRUE/
 SPIDERMAN SIGN/Anghami/open_Anghami/TRUE/
-HIGH-FIVE SIGN/Control/Enter/TRUE/
-ONE SIGN/ScreenShot/take_screenshot/FALSE/
 CALL SIGN/Whatsapp/open_whatsapp/TRUE/
+ONE SIGN/Navigate/Enter/TRUE/
+PEACE SIGN/ScreenShot/take_screenshot/FALSE/
+HIGH-FIVE SIGN/Control/Enter/TRUE/
