@@ -127,11 +127,13 @@ def anghami_update(gesture, playlist):
 #prevent overwritten in text files
 def update_gesture(entry_gesture, gesture, module, function, params):
 
-    if not entry_gesture or not gesture:
-        return False
+    print(module)
+    if module != "ScreenShot":
+        if not entry_gesture or not gesture:
+            return False
 
-    if entry_gesture == gesture:
-        return False
+        if entry_gesture == gesture:
+            return False
 
     key = {i for i in gesture_dic if gesture_dic[i] == modules[module]}
     if key:
@@ -156,3 +158,5 @@ def update_gesture(entry_gesture, gesture, module, function, params):
         navigate_update(gesture, params)
     elif module == "Anghami":
         anghami_update(gesture, params)
+        
+    return True
