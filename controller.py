@@ -1,26 +1,31 @@
-whatsapp_file = open("Whatsapp.txt")
+WHATSAPP_FILE = "./database/Whatsapp.txt"
+NAVIGATE_FILE = "./database/Navigate.txt"
+CONTROLLER_FILE = "./database/Control.txt"
+ANGHAMI_FILE = "./database/Anghami.txt"
+GESTURES_FILE = "./database/gestures.txt"
+whatsapp_file = open(WHATSAPP_FILE)
 whatsapp_data = whatsapp_file.readlines()
 whatsapp_dic = {}
 for line in whatsapp_data:
     whatsapp_dic[line.split()[0]] = line.split()[1]
 
-navigate_data = open("Navigate.txt").readlines()
+navigate_data = open(NAVIGATE_FILE).readlines()
 navigate_dic = {}
 for line in navigate_data:
     navigate_dic[line.split()[0]] = line.split()[1]
 
-controller_file = open("Control.txt")
+controller_file = open(CONTROLLER_FILE)
 controller_data = controller_file.readlines()
 control_dic = {}
 for line in controller_data:
     control_dic[line.split()[0]] = line.split()[1]
 
-anghami_data = open("Anghami.txt").readlines()
+anghami_data = open(ANGHAMI_FILE).readlines()
 anghami_dic = {}
 for line in anghami_data:
     anghami_dic[line.split()[0]] = line.split()[1]
 
-gesture_data = open("Gestures.txt").readlines()
+gesture_data = open(GESTURES_FILE).readlines()
 gesture_dic = {}
 for line in gesture_data:
     gesture_dic[line.split()[0]] = line.split()[1]
@@ -68,8 +73,8 @@ def whatsapp_update(gesture, function, params):
     for key, value in whatsapp_dic.items():
         txt += f"{key} {value}\n"
 
-    open("Whatsapp.txt", "w+").write(txt)
-    txt_emptylines("Whatsapp.txt")
+    open(WHATSAPP_FILE, "w+").write(txt)
+    txt_emptylines(WHATSAPP_FILE)
 
 
 def navigate_update(gesture, location):
@@ -84,8 +89,8 @@ def navigate_update(gesture, location):
     for key, value in navigate_dic.items():
         txt += f"{key} {value}\n"
 
-    open("Navigate.txt", "w+").write(txt)
-    txt_emptylines("Navigate.txt")
+    open(NAVIGATE_FILE, "w+").write(txt)
+    txt_emptylines(NAVIGATE_FILE)
 
 
 def control_update(gesture, function, program):
@@ -104,8 +109,8 @@ def control_update(gesture, function, program):
     for key, value in control_dic.items():
         txt += f"{key} {value}\n"
 
-    open("Control.txt", "w+").write(txt)
-    txt_emptylines("Control.txt")
+    open(CONTROLLER_FILE, "w+").write(txt)
+    txt_emptylines(CONTROLLER_FILE)
 
 
 def anghami_update(gesture, playlist):
@@ -121,8 +126,8 @@ def anghami_update(gesture, playlist):
     for key, value in anghami_dic.items():
         txt += f"{key} {value}\n"
 
-    open("Anghami.txt", "w+").write(txt)
-    txt_emptylines("Anghami.txt")
+    open(ANGHAMI_FILE, "w+").write(txt)
+    txt_emptylines(ANGHAMI_FILE)
 
 #prevent overwritten in text files
 def update_gesture(entry_gesture, gesture, module, function, params):
@@ -143,8 +148,8 @@ def update_gesture(entry_gesture, gesture, module, function, params):
     for key, value in gesture_dic.items():
         txt += f"{key} {value}\n"
 
-    open("Gestures.txt", "w+").write(txt)
-    txt_emptylines("Gestures.txt")
+    open(GESTURES_FILE, "w+").write(txt)
+    txt_emptylines(GESTURES_FILE)
 
     if module == "Whatsapp":
         function = functions[function]
