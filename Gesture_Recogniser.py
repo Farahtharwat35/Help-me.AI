@@ -205,7 +205,7 @@ cap = cv2.VideoCapture(0)  # default 0
 cap.set(3, 1280)
 cap.set(4, 960)
 
-flag1 = [True]
+flag1 = True
 modules = []
 while True:
 
@@ -227,25 +227,25 @@ while True:
         _, myGesture = recognizeGestures(img, fingers_statuses, count)
         if "SPIDERMAN SIGN" in myGesture.values():
             # volumeFlag = True
-            Integrator.gestureChooser_main("SPIDERMAN SIGN", flag1, modules)
+            flag1 = Integrator.gestureChooser_main("SPIDERMAN SIGN", flag1, modules)
 
         elif "HIGH-FIVE SIGN" in myGesture.values():
-            Integrator.gestureChooser_main("HIGH-FIVE SIGN", flag1, modules)
+            flag1 = Integrator.gestureChooser_main("HIGH-FIVE SIGN", flag1, modules)
 
         elif "CALL SIGN" in myGesture.values():
-            Integrator.gestureChooser_main("CALL SIGN", flag1, modules)
+            flag1 = Integrator.gestureChooser_main("CALL SIGN", flag1, modules)
 
         elif "FIST SIGN" in myGesture.values():
-            Integrator.gestureChooser_main("FIST SIGN", flag1, modules)
+            flag1 = Integrator.gestureChooser_main("FIST SIGN", flag1, modules)
 
         elif "PERFECTO SIGN" in myGesture.values():
-            Integrator.gestureChooser_main("PERFECTO SIGN", flag1, modules)
+            flag1 = Integrator.gestureChooser_main("PERFECTO SIGN", flag1, modules)
 
         elif "ONE SIGN" in myGesture.values():
-            Integrator.gestureChooser_main("ONE SIGN", flag1, modules)
+            flag1 = Integrator.gestureChooser_main("ONE SIGN", flag1, modules)
 
         elif "PEACE SIGN" in myGesture.values():
-            Integrator.gestureChooser_main("PEACE SIGN", flag1, modules)
+            flag1 = Integrator.gestureChooser_main("PEACE SIGN", flag1, modules)
 
         for handlandmark in results.multi_hand_landmarks:
             # This line loops through each individual landmark point in the currentVolume set of hand landmarks.

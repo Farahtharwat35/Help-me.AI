@@ -2,9 +2,9 @@
 # This function chooses the first gesture which is the start of every sequence of gestures.
 # Then the other functions are focused on executing the sequence
 # import time
-def gestureChooser_main(gesture, flag1, modules):
-    if flag1[0]:
-        with open('Gestures.txt', 'r') as file:
+def gestureChooser_main(gesture, flag1: bool, modules) -> bool:
+    if flag1:
+        with open('./database/Gestures.txt', 'r') as file:
             lines = file.readlines()
             for line in lines:
                 columns = line.split('/')
@@ -20,15 +20,16 @@ def gestureChooser_main(gesture, flag1, modules):
                     func()
                     # time.sleep(0.7)
                     if txt_sequence == "TRUE":
-                        flag1[0] = False
+                        return False
+            return flag1
     else:
-        gestureChooser_side(gesture, flag1, modules)
+        return gestureChooser_side(gesture, flag1, modules)
 
 
-def gestureChooser_side(gesture, flag1, modules):
+def gestureChooser_side(gesture, flag1: bool, modules) -> bool:
     #print("Da5alttttttttt")
     print(modules)
-    with open(modules[-1] + '.txt', 'r') as file:
+    with open("./database/" + modules[-1] + '.txt', 'r') as file:
         lines = file.readlines()
         for line in lines:
             columns = line.split('/')
@@ -48,4 +49,5 @@ def gestureChooser_side(gesture, flag1, modules):
                 # Give Time for next Function Call
                 # time.sleep(0.7)
             if gesture == "FIST SIGN":
-                flag1[0] = True
+                return True
+        return False
