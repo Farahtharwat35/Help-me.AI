@@ -29,7 +29,8 @@ def map_gesture_to_function(gesture):
         print("CANNOT PERFORM OPERATION")
         return
     if gesture == "FIST SIGN":
-        print("Leaving current state " + LAST_STATE)
+        if LAST_STATE:
+            print("Leaving current state " + LAST_STATE)
         LAST_STATE = None
         return
     if LAST_STATE != None:
@@ -37,6 +38,9 @@ def map_gesture_to_function(gesture):
 
     else:
         LAST_STATE = GESTURES.get(gesture)
+        if not LAST_STATE:
+            print("Entered wrong state", gesture)
+            return
         print("Entered state " + LAST_STATE)
         LAST_STATE_TIME = time.time()
         # print("Entered state spiderman")
