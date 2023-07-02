@@ -11,8 +11,8 @@
             "peace": "scrollUp"
         },
         "volume": {
-            "thumb": "bye",
-            "index": "goodbye"
+            "thumb_up": "bye",
+            "one": "goodbye"
         },
         "Null": {
             "call": "screenshot",

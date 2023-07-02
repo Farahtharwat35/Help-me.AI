@@ -29,7 +29,7 @@ def map_gesture_to_function(gesture: str):
     if (time.time() - LAST_STATE_TIME) <1:
         print("CANNOT PERFORM OPERATION")
         return
-    if gesture == "FIST SIGN":
+    if gesture == "fist":
         if LAST_STATE:
             print("Leaving current state " + LAST_STATE)
         LAST_STATE = None
