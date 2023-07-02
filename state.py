@@ -14,7 +14,7 @@ LAST_STATE_TIME = time.time()
 
 def map_state_to_function(gesture):
     func = STATES[LAST_STATE].get(gesture)
-    print("Executing function: ", func)
+    print("Executing function: ", func, " in state ", LAST_STATE)
     if func == "scrollUp":
         scrollUP()
     elif func == "scrollDown":
@@ -23,9 +23,10 @@ def map_state_to_function(gesture):
         take_screenshot()
 
 
-def map_gesture_to_function(gesture):
+def map_gesture_to_function(gesture: str):
+    gesture = gesture.lower()
     global LAST_STATE_TIME, LAST_STATE
-    if (time.time() - LAST_STATE_TIME) < 0.5:
+    if (time.time() - LAST_STATE_TIME) <1:
         print("CANNOT PERFORM OPERATION")
         return
     if gesture == "FIST SIGN":

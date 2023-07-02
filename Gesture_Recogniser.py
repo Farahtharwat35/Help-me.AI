@@ -2,19 +2,9 @@ import cv2
 import mediapipe as mp
 from state import map_gesture_to_function
 
-#####Detecting, initializing, and configuring the hands#####
 mpHands = mp.solutions.hands
-# This line imports the hands module from the MediaPipe library and assigns it to the variable mpHands.
-# This module contains the functionality for detecting and tracking hands in images and videos
 hands = mpHands.Hands()
-# This line creates an instance of the Hands class from the hands module, which is used to detect and track hands in an image or video.
-# This line initializes the hand tracking model with default parameters.
 mpDraw = mp.solutions.drawing_utils
-
-
-# This line imports the drawing_utils module from the MediaPipe library and assigns it to the variable mpDraw.
-# This module contains utility functions for drawing the hand landmarks and connections on an image or video frame.
-
 
 def countFingers(image, results, draw=True):
     # Get the height and width of the input image.
@@ -127,17 +117,17 @@ def countFingers(image, results, draw=True):
 def recognizeGestures(fingers_statuses, count):
     hands_labels = ["RIGHT", "LEFT"]
     hands_gestures = {"RIGHT": "UNKNOWN", "LEFT": "UNKNOWN"}
-    for hand_index, hand_label in enumerate(hands_labels):
-        print(hand_label, hand_index)
+    # print(fingers_statuses, count)
+    for hand_label in hands_labels:
        # Check if the number of fingers up is 2 and the fingers that are up, are the index and the middle finger.
         if (
             count[hand_label] == 2
             and fingers_statuses[hand_label + "_MIDDLE"]
             and fingers_statuses[hand_label + "_INDEX"]
         ):
-            # Update the gesture value of the hand that we are iterating upon to V SIGN.
-            hands_gestures[hand_label] = "PEACE SIGN"
-            print("PEACE SIGN")
+            # Update the gesture value of the hand that we are iterating upon to V.
+            hands_gestures[hand_label] = "PEACE"
+            print("PEACE")
 
         elif (
             count[hand_label] == 3
@@ -145,34 +135,28 @@ def recognizeGestures(fingers_statuses, count):
             and fingers_statuses[hand_label + "_INDEX"]
             and fingers_statuses[hand_label + "_PINKY"]
         ):
-            # Update the gesture value of the hand that we are iterating upon to SPIDERMAN SIGN.
-            hands_gestures[hand_label] = "SPIDERMAN SIGN"
-            print("Spider SIGN")
+            # Update the gesture value of the hand that we are iterating upon to SPIDERMAN.
+            hands_gestures[hand_label] = "SPIDERMAN"
+            print("Spider")
 
         elif count[hand_label] == 5:
-            # Update the gesture value of the hand that we are iterating upon to HIGH-FIVE SIGN.
-            hands_gestures[hand_label] = "HIGH-FIVE SIGN"
-            print("HIGH-FIVE SIGN")
-
-        ####################################################################################################################
+            # Update the gesture value of the hand that we are iterating upon to HIGH-FIVE.
+            hands_gestures[hand_label] = "PALM"
+            print("HIGH-FIVE")
 
         elif count[hand_label] == 0:
-            # Update the gesture value of the hand that we are iterating upon to FIST SIGN.
-            hands_gestures[hand_label] = "FIST SIGN"
-            print("FIST SIGN")
-
-        #####################################################################################################################
+            # Update the gesture value of the hand that we are iterating upon to FIST.
+            hands_gestures[hand_label] = "FIST"
+            print("FIST")
 
         elif (
             count[hand_label] == 2
             and fingers_statuses[hand_label + "_THUMB"]
             and fingers_statuses[hand_label + "_PINKY"]
         ):
-            # Update the gesture value of the hand that we are iterating upon to CALL SIGN.
-            hands_gestures[hand_label] = "CALL SIGN"
-            print("CALL SIGN")
-
-        #####################################################################################################################
+            # Update the gesture value of the hand that we are iterating upon to CALL.
+            hands_gestures[hand_label] = "CALL"
+            print("CALL")
 
         elif (
             count[hand_label] == 3
@@ -180,29 +164,24 @@ def recognizeGestures(fingers_statuses, count):
             and fingers_statuses[hand_label + "_PINKY"]
             and fingers_statuses[hand_label + "_RING"]
         ):
-            # Update the gesture value of the hand that we are iterating upon to PERFECTO SIGN.
-            hands_gestures[hand_label] = "PERFECTO SIGN"
-            print("PERFECTO SIGN")
-
-        #####################################################################################################################
+            # Update the gesture value of the hand that we are iterating upon to PERFECTO.
+            hands_gestures[hand_label] = "PERFECTO"
+            print("PERFECTO")
 
         elif count[hand_label] == 1 and fingers_statuses[hand_label + "_INDEX"]:
-            # Update the gesture value of the hand that we are iterating upon to ONE SIGN WITH INDEX.
-            hands_gestures[hand_label] = "ONE SIGN"
-            print("ONE SIGN")
+            # Update the gesture value of the hand that we are iterating upon to ONE WITH INDEX.
+            hands_gestures[hand_label] = "ONE"
+            print("ONE")
 
-        ######################################################################################################################
         elif count[hand_label] == 1 and fingers_statuses[hand_label + "_THUMB_UP"]:
-            # Update the gesture value of the hand that we are iterating upon to ONE SIGN WITH INDEX.
-            hands_gestures[hand_label] = "THUMB UP SIGN"
-            print("THUMB UP SIGN")
-
-        ######################################################################################################################
+            # Update the gesture value of the hand that we are iterating upon to ONE WITH INDEX.
+            hands_gestures[hand_label] = "THUMB_UP"
+            print("THUMB UP")
 
         elif count[hand_label] == 1 and fingers_statuses[hand_label + "_THUMB_DOWN"]:
-            # Update the gesture value of the hand that we are iterating upon to ONE SIGN WITH INDEX.
-            hands_gestures[hand_label] = "THUMB DOWN SIGN"
-            print("THUMB DOWN SIGN")
+            # Update the gesture value of the hand that we are iterating upon to ONE WITH INDEX.
+            hands_gestures[hand_label] = "THUMB_DOWN"
+            print("THUMB DOWN")
 
     return hands_gestures
 
@@ -222,7 +201,6 @@ while True:
     if results.multi_hand_landmarks:
         img, fingers_statuses, count = countFingers(img, results)
         myGesture = recognizeGestures(fingers_statuses, count)
-        print("VAluessss", myGesture)
         map_gesture_to_function(myGesture["RIGHT"])
         for handlandmark in results.multi_hand_landmarks:
             mpDraw.draw_landmarks(

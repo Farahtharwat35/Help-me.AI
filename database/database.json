@@ -1,4 +1,10 @@
 {
+    "GESTURES": {
+        "spiderman": "control",
+        "peace": "volume",
+        "call": "Null",
+        "like": "Null"
+    },
     "STATES": {
         "control": {
             "palm": "scrollDown",
@@ -12,11 +18,5 @@
             "call": "screenshot",
             "like": "nullable2"
         }
-    },
-    "GESTURES": {
-        "spiderman": "control",
-        "peace": "volume",
-        "call": "Null",
-        "like": "Null"
     }
 }
