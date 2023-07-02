@@ -1,0 +1,22 @@
+{
+    "STATES": {
+        "control": {
+            "palm": "scrollDown",
+            "peace": "scrollUp"
+        },
+        "volume": {
+            "thumb": "bye",
+            "index": "goodbye"
+        },
+        "Null": {
+            "call": "screenshot",
+            "like": "nullable2"
+        }
+    },
+    "GESTURES": {
+        "spiderman": "control",
+        "peace": "volume",
+        "call": "Null",
+        "like": "Null"
+    }
+}

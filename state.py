@@ -1,20 +1,12 @@
 import time
-from datetime import datetime
 
-from Control import scrollDOWN, scrollUP
-from ScreenShot import take_screenshot
+from modules.Control import scrollDOWN, scrollUP
+from modules.ScreenShot import take_screenshot
+from dbCommunciator import readData
 
 LAST_STATE = None
 
-STATES = {
-    "control": {"palm": "scrollDown", "peace": "scrollUp"},
-    "volume": {"thumb": "bye", "index": "goodbye"},
-    "Null": {"call": "screenshot"}
-}
-
-GESTURES = {"spiderman": "control", 
-            "peace": "volume", 
-            "call": "Null"}
+GESTURES, STATES = readData()
 
 
 LAST_STATE_TIME = time.time()
@@ -51,37 +43,10 @@ def map_gesture_to_function(gesture):
         LAST_STATE_TIME = time.time()
         # print("Entered state peace")
         if LAST_STATE == "Null":
-            print(f"Calling Null with {gesture} and last_state {LAST_STATE}")
             map_state_to_function(gesture)
             LAST_STATE = None
 
 
-if __name__ == "__main__":
-    now = datetime.now()
-    current_time = now.strftime("%H:%M:%S")
-    print("Executing at: ", current_time)
 
-    time.sleep(1)
-    map_gesture_to_function("spiderman")
-    map_gesture_to_function("spiderman")
-    time.sleep(1)
-    map_gesture_to_function("palm")
-    time.sleep(1.5)
-    map_gesture_to_function("peace")
-    time.sleep(1)
-    map_gesture_to_function("FIST SIGN")
-    time.sleep(1)
-    map_gesture_to_function("peace")
-    time.sleep(1)
-    map_gesture_to_function("spiderman")
-    time.sleep(1)
-    map_gesture_to_function("thumb")
-    time.sleep(1)
-    map_gesture_to_function("index")
-    time.sleep(1)
-    map_gesture_to_function("call")
-    time.sleep(1)
-    map_gesture_to_function("FIST SIGN")
-    time.sleep(1)
-    map_gesture_to_function("call")
-    time.sleep(1)
+
+   
