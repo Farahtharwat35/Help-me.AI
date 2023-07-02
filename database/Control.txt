@@ -1,5 +1,0 @@
-ONE SIGN/Control/VolumeUP
-PEACE SIGN/Control/VolumeDOWN
-CALL SIGN/Control/scrollDOWN
-SPIDERMAN SIGN/Control/scrollUP
-PERFECTO SIGN/Control/open_program/Notepad

@@ -1,2 +1,0 @@
-PEACE SIGN/ScreenShot/take_screenshot/FALSE/
-HIGH-FIVE SIGN/Control/Enter/TRUE/

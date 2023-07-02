@@ -1,3 +1,0 @@
-screenshot=Null:Null->call
-scrollDown=control:spiderman->palm
-scrollUP=control:spiderman->peace
