@@ -16,7 +16,7 @@ mpDraw = mp.solutions.drawing_utils
 # This module contains utility functions for drawing the hand landmarks and connections on an image or video frame.
 
 
-def countFingers(image, results, draw=True, display=True):
+def countFingers(image, results, draw=True):
     # Get the height and width of the input image.
     height, width, _ = image.shape
 
@@ -124,9 +124,8 @@ def countFingers(image, results, draw=True, display=True):
     return output_image, fingers_statuses, count
 
 
-def recognizeGestures(image, fingers_statuses, count):
-    # Create a copy of the input image.
-    output_image = image.copy()
+def recognizeGestures(fingers_statuses, count):
+    # Create a copy of the input image
 
     # Store the labels of both hands in a list.
     hands_labels = ["RIGHT", "LEFT"]
@@ -227,9 +226,7 @@ def recognizeGestures(image, fingers_statuses, count):
             hands_gestures[hand_label] = "THUMB DOWN SIGN"
             print("THUMB DOWN SIGN")
 
-        #######################################################################################################################
-        # Return the output image and the gestures of the both hands.
-        return output_image, hands_gestures
+        return hands_gestures
 
 
 cap = cv2.VideoCapture(0)  # default 0
@@ -242,52 +239,14 @@ while True:
     success, img = cap.read()
     img = cv2.flip(img, 1)
     imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-
-    # The results variable contains the output of the hand landmark detection,
-    # which includes information such as the 3D coordinates of each hand landmark, the hand's pose,
-    # and the handedness (left or right hand).
     results = hands.process(imgRGB)
 
-    # List for hands
-    lmList = []
-
     if results.multi_hand_landmarks:
-        img, fingers_statuses, count = countFingers(img, results, display=False)
-        _, myGesture = recognizeGestures(img, fingers_statuses, count)
+        img, fingers_statuses, count = countFingers(img, results)
+        myGesture = recognizeGestures(fingers_statuses, count)
         print("VAluessss", myGesture.values())
         map_gesture_to_function(myGesture["RIGHT"])
-        """
-        if "SPIDERMAN SIGN" in myGesture.values():
-            # volumeFlag = True
-            map_gesture_to_function("FIST SIGN")
-
-        elif "HIGH-FIVE SIGN" in myGesture.values():
-            map_gesture_to_function("FIST SIGN")
-
-        elif "CALL SIGN" in myGesture.values():
-            map_gesture_to_function("FIST SIGN")
-
-        elif "FIST SIGN" in myGesture.values():
-            map_gesture_to_function("FIST SIGN")
-
-        elif "PERFECTO SIGN" in myGesture.values():
-            map_gesture_to_function("FIST SIGN")
-
-        elif "ONE SIGN" in myGesture.values():
-            map_gesture_to_function("FIST SIGN")
-
-        elif "PEACE SIGN" in myGesture.values():
-            map_gesture_to_function("FIST SIGN")
-"""
         for handlandmark in results.multi_hand_landmarks:
-            # This line loops through each individual landmark point in the currentVolume set of hand landmarks.
-            # The landmark property of the handlandmark object contains a list of 21 (x, y, z) coordinates for each hand landmark detected in the image or video frame.
-            for id, lm in enumerate(handlandmark.landmark):
-                h, w, c = img.shape  # height, width, and channels of image
-                cx, cy = int(lm.x * w), int(lm.y * h)
-                # (This line calculates the (x, y) coordinates of the currentVolume landmark point by multiplying its normalized (x, y) coordinates (in the range [0, 1]) with the width and height of the image, respectively, and converting the result to an integer value.
-                # This gives the pixel coordinates of the landmark point in the image.
-                lmList.append([id, cx, cy])
             mpDraw.draw_landmarks(
                 img, handlandmark, mpHands.HAND_CONNECTIONS
             )  # draw all the landmarks
