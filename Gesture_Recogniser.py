@@ -125,21 +125,11 @@ def countFingers(image, results, draw=True):
 
 
 def recognizeGestures(fingers_statuses, count):
-    # Create a copy of the input image
-
-    # Store the labels of both hands in a list.
     hands_labels = ["RIGHT", "LEFT"]
-
-    # Initialize a dictionary to store the gestures of both hands in the image.
     hands_gestures = {"RIGHT": "UNKNOWN", "LEFT": "UNKNOWN"}
-
-    # Iterate over the left and right hand.
     for hand_index, hand_label in enumerate(hands_labels):
         print(hand_label, hand_index)
-        # Check if the person is making the 'Peace Sign' gesture with the hand.
-        ####################################################################################################################
-
-        # Check if the number of fingers up is 2 and the fingers that are up, are the index and the middle finger.
+       # Check if the number of fingers up is 2 and the fingers that are up, are the index and the middle finger.
         if (
             count[hand_label] == 2
             and fingers_statuses[hand_label + "_MIDDLE"]
@@ -149,12 +139,6 @@ def recognizeGestures(fingers_statuses, count):
             hands_gestures[hand_label] = "PEACE SIGN"
             print("PEACE SIGN")
 
-        ####################################################################################################################
-
-        # Check if the person is making the 'SPIDERMAN' gesture with the hand.
-        ####################################################################################################################
-
-        # Check if the number of fingers up is 3 and the fingers that are up, are the thumb, index and the pinky finger.
         elif (
             count[hand_label] == 3
             and fingers_statuses[hand_label + "_THUMB"]
@@ -165,12 +149,6 @@ def recognizeGestures(fingers_statuses, count):
             hands_gestures[hand_label] = "SPIDERMAN SIGN"
             print("Spider SIGN")
 
-        ####################################################################################################################
-
-        # Check if the person is making the 'HIGH-FIVE' gesture with the hand.
-        ####################################################################################################################
-
-        # Check if the number of fingers up is 5, which means that all the fingers are up.
         elif count[hand_label] == 5:
             # Update the gesture value of the hand that we are iterating upon to HIGH-FIVE SIGN.
             hands_gestures[hand_label] = "HIGH-FIVE SIGN"
@@ -226,7 +204,7 @@ def recognizeGestures(fingers_statuses, count):
             hands_gestures[hand_label] = "THUMB DOWN SIGN"
             print("THUMB DOWN SIGN")
 
-        return hands_gestures
+    return hands_gestures
 
 
 cap = cv2.VideoCapture(0)  # default 0
@@ -244,7 +222,7 @@ while True:
     if results.multi_hand_landmarks:
         img, fingers_statuses, count = countFingers(img, results)
         myGesture = recognizeGestures(fingers_statuses, count)
-        print("VAluessss", myGesture.values())
+        print("VAluessss", myGesture)
         map_gesture_to_function(myGesture["RIGHT"])
         for handlandmark in results.multi_hand_landmarks:
             mpDraw.draw_landmarks(
@@ -252,6 +230,5 @@ while True:
             )  # draw all the landmarks
 
     cv2.imshow("Image", img)
-
     if cv2.waitKey(1) & 0xFF == ord("q"):
         break
