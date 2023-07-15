@@ -6,6 +6,7 @@ mpHands = mp.solutions.hands
 hands = mpHands.Hands()
 mpDraw = mp.solutions.drawing_utils
 
+
 def countFingers(image, results, draw=True):
     # Get the height and width of the input image.
     height, width, _ = image.shape
@@ -99,7 +100,6 @@ def countFingers(image, results, draw=True):
     if draw:
         # Write the total count of the fingers of both hands on the output image.
         text = "Detected " + str(sum(count.values())) + " Fingers"
-        text_size = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 1, 2)[0]
         text_x = 10
         cv2.putText(
             output_image,
@@ -119,7 +119,7 @@ def recognizeGestures(fingers_statuses, count):
     hands_gestures = {"RIGHT": "UNKNOWN", "LEFT": "UNKNOWN"}
     # print(fingers_statuses, count)
     for hand_label in hands_labels:
-       # Check if the number of fingers up is 2 and the fingers that are up, are the index and the middle finger.
+        # Check if the number of fingers up is 2 and the fingers that are up, are the index and the middle finger.
         if (
             count[hand_label] == 2
             and fingers_statuses[hand_label + "_MIDDLE"]
