@@ -1,12 +1,11 @@
 import customtkinter
-import controller
+# import controller
 import tkinter
+from os import system
 
 
-def run(runfile):
-    module = __import__('Gesture_Recogniser')
-    with open(runfile, "r") as rnf:
-        exec(rnf.read())
+def run():
+   system("python Gesture_Recogniser.py")
 
 def checkValidity(valid):
     if not valid:
@@ -28,7 +27,7 @@ def create_screen(button_name):
         label = customtkinter.CTkLabel(master=root, text="Help me.AI", font=('Cooper Black', 80), text_color="#1B4769")
         label.pack(pady=100, padx=10)
         button1 = customtkinter.CTkButton(master=root, text="Start", width=120, height=60,
-                                          fg_color="#1B4769", command=lambda: run("Gesture_Recogniser.py"))
+                                          fg_color="#1B4769", command=run)
         button1.place(relx=0.44, rely=0.6)
         button2 = customtkinter.CTkButton(master=root, text="Customize", width=120, height=60,
                                           fg_color="#1B4769", command=lambda: create_screen("Customize"))
@@ -79,7 +78,7 @@ def create_screen(button_name):
         label = customtkinter.CTkLabel(master=root, text="Help me.AI", font=('Cooper Black', 80), text_color="#1B4769")
         label.pack(pady=100, padx=10)
         button1 = customtkinter.CTkButton(master=root, text="Start", width=120, height=60,
-                                          fg_color="#1B4769", command=lambda: run("Gesture_Recogniser.py"))
+                                          fg_color="#1B4769", command=run)
         button1.place(relx=0.44, rely=0.6)
         button2 = customtkinter.CTkButton(master=root, text="Customize", width=120, height=60,
                                           fg_color="#1B4769", command=lambda: create_screen("Customize"))
