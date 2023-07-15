@@ -25,10 +25,13 @@ def nullableStates():
     callStateWithdelay("call")
     callStateWithdelay("like")
 
+def openProgram():
+    callStateWithdelay("spiderman")
+    callStateWithdelay("call")
 
 if __name__ == "__main__":
     now = datetime.now()
     current_time = now.strftime("%H:%M:%S")
     print("Executing at: ", current_time)
 
-    nullableStates()
+    openProgram()

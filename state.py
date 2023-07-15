@@ -1,6 +1,6 @@
 import time
 
-from modules.Control import scrollDOWN, scrollUP
+from modules.Control import open_program, scrollDOWN, scrollUP
 from modules.ScreenShot import take_screenshot
 from dbCommunciator import readData
 
@@ -13,7 +13,7 @@ LAST_STATE_TIME = time.time()
 
 
 def map_state_to_function(gesture):
-    func = STATES[LAST_STATE].get(gesture)
+    func, *params = STATES[LAST_STATE].get(gesture).split(":")
     print("Executing function: ", func, " in state ", LAST_STATE)
     if func == "scrollUp":
         scrollUP()
@@ -21,6 +21,8 @@ def map_state_to_function(gesture):
         scrollDOWN()
     elif func == "screenshot":
         take_screenshot()
+    elif func == "openProgram":
+        open_program(*params)
 
 
 def map_gesture_to_function(gesture: str):

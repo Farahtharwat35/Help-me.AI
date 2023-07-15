@@ -8,7 +8,8 @@
     "STATES": {
         "control": {
             "palm": "scrollDown",
-            "peace": "scrollUp"
+            "peace": "scrollUp",
+            "call": "openProgram:notepad.exe"
         },
         "volume": {
             "thumb_up": "bye",
