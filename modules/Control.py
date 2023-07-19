@@ -1,15 +1,15 @@
-from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
+# from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 from ctypes import cast, POINTER
-from comtypes import CLSCTX_ALL
+# from comtypes import CLSCTX_ALL
 import subprocess
 import pyautogui
 
 # Accessing the speaker
-devices = AudioUtilities.GetSpeakers()
-interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
-volume = cast(interface, POINTER(IAudioEndpointVolume))
-# Volume Range
-volMin, volMax = volume.GetVolumeRange()[:2]
+# devices = AudioUtilities.GetSpeakers()
+# interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
+# volume = cast(interface, POINTER(IAudioEndpointVolume))
+# # Volume Range
+# volMin, volMax = volume.GetVolumeRange()[:2]
 
 
 def Enter():

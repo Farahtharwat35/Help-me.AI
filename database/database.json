@@ -1,0 +1,23 @@
+{
+    "GESTURES": {
+        "spiderman": "control",
+        "peace": "volume",
+        "call": "Null",
+        "like": "Null"
+    },
+    "STATES": {
+        "control": {
+            "palm": "scrollDown",
+            "peace": "scrollUp",
+            "call": "openProgram:notepad.exe"
+        },
+        "volume": {
+            "thumb_up": "bye",
+            "one": "goodbye"
+        },
+        "Null": {
+            "call": "screenshot",
+            "like": "nullable2"
+        }
+    }
+}

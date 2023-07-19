@@ -45,6 +45,7 @@ def send_whatsapp_message(message):
     input_box.send_keys(message + Keys.ENTER)
     time.sleep(1)
 
+# TODO: add open mic gesture 
 def Open_mic():
     Speech2Txt.listen()
     Integrator.gestureChooser_main("SPIDERMAN SIGN", [False], ["Whatsapp"])
